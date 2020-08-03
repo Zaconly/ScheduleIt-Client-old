@@ -1,10 +1,11 @@
 import { ApolloProvider } from "@apollo/client"
 import { CssBaseline, ThemeProvider } from "@material-ui/core"
-import { useApollo } from "lib/apollo"
-import theme from "lib/theme"
 import { AppProps } from "next/app"
 import Head from "next/head"
 import { useEffect } from "react"
+
+import { useApollo } from "../lib/apollo"
+import theme from "../lib/theme"
 
 const App = ({ Component, pageProps }: AppProps) => {
   const client = useApollo(pageProps.initialApolloState)

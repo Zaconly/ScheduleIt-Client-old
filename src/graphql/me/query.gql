@@ -1,0 +1,19 @@
+# import "../fragment.gql"
+
+query Me {
+  me {
+    ...UserInfo
+    role
+    boards {
+      ...BoardInfo
+      tasks {
+        ...TaskInfo
+        tags {
+          ...TagInfo
+        }
+      }
+    }
+    createdAt
+    updatedAt
+  }
+}

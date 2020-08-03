@@ -1,13 +1,12 @@
-import { useMutation, useQuery } from "@apollo/client"
 import { Button } from "@material-ui/core"
-import Layout from "components/layout"
-import { LOGIN } from "graphql/me/mutation"
-import { ME } from "graphql/me/query"
-import { initializeApollo } from "lib/apollo"
 import { GetServerSideProps } from "next"
 
+import Layout from "../components/layout"
+import { MeDocument, useLoginMutation, useMeQuery } from "../generated/graphql"
+import apolloQuerySsr from "../utils/apolloQuerySsr"
+
 const Index = () => {
-  const [login, { data }] = useMutation(LOGIN, {
+  const [login, { data }] = useLoginMutation({
     variables: {
       input: {
         identifier: "thomas.vaucois@viacesi.fr",
@@ -16,7 +15,7 @@ const Index = () => {
     }
   })
 
-  const { data: meData } = useQuery(ME)
+  const { data: meData } = useMeQuery()
 
   return (
     <Layout home>
@@ -30,22 +29,7 @@ const Index = () => {
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const apolloClient = initializeApollo(null, req.headers.cookie)
-
-  try {
-    await apolloClient.query({
-      query: ME
-    })
-  } catch (e) {
-    console.error(e)
-  }
-
-  return {
-    props: {
-      initialApolloState: apolloClient.cache.extract(),
-      revalidate: 1
-    }
-  }
+  return apolloQuerySsr(MeDocument, req)
 }
 
 export default Index

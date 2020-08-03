@@ -1,0 +1,20 @@
+fragment UserInfo on User {
+  id
+  username
+  email
+}
+
+fragment BoardInfo on Board {
+  id
+  name
+}
+
+fragment TaskInfo on Task {
+  id
+  name
+}
+
+fragment TagInfo on Tag {
+  id
+  name
+}

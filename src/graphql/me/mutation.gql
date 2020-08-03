@@ -1,0 +1,10 @@
+# import "../fragment.gql"
+
+mutation Login($input: LoginInput!) {
+  login(input: $input) {
+    ...UserInfo
+    role
+    createdAt
+    updatedAt
+  }
+}

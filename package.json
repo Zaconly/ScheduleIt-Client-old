@@ -1,14 +1,17 @@
 {
-  "name": "client",
+  "name": "@schedule-it/client",
   "version": "0.1.0",
   "private": true,
+  "description": "Client for @schedule-it/server",
+  "author": "Zaconly <thomas.vaucois@viacesi.fr>",
   "license": "MIT",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint --fix . --ignore-path ./.gitignore",
-    "format": "prettier --write \"./src/**/*.{ts,tsx,css,md,json}\""
+    "format": "prettier --write \"./src/**/*.{ts,tsx,css,md,json}\"",
+    "generate": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
     "@apollo/client": "^3.1.1",
@@ -20,6 +23,11 @@
     "react-dom": "16.13.1"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "1.17.7",
+    "@graphql-codegen/import-types-preset": "^1.17.7",
+    "@graphql-codegen/typescript": "1.17.7",
+    "@graphql-codegen/typescript-operations": "1.17.7",
+    "@graphql-codegen/typescript-react-apollo": "1.17.7",
     "@types/node": "^14.0.27",
     "@types/react": "^16.9.44",
     "@typescript-eslint/eslint-plugin": "^3.7.1",
@@ -31,6 +39,7 @@
     "eslint-plugin-react": "^7.20.5",
     "eslint-plugin-react-hooks": "^4.0.8",
     "eslint-plugin-simple-import-sort": "^5.0.3",
+    "graphql-codegen-apollo-next-ssr": "^0.0.14",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.11",
     "prettier": "^2.0.5",
