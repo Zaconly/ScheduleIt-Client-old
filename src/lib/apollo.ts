@@ -1,6 +1,8 @@
 import { ApolloClient, HttpLink, InMemoryCache, NormalizedCacheObject } from "@apollo/client"
 import { useMemo } from "react"
 
+import { darkThemeVar } from "../apollo"
+
 let apolloClient: ApolloClient<NormalizedCacheObject | null>
 
 function createApolloClient(cookie = "") {
@@ -13,7 +15,19 @@ function createApolloClient(cookie = "") {
         cookie
       }
     }),
-    cache: new InMemoryCache()
+    cache: new InMemoryCache({
+      typePolicies: {
+        Query: {
+          fields: {
+            hasDarkTheme: {
+              read() {
+                return darkThemeVar()
+              }
+            }
+          }
+        }
+      }
+    })
   })
 }
 

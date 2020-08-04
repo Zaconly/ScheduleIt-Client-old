@@ -8,6 +8,25 @@ export const useStyles = makeStyles((theme: Theme) =>
     menuButton: {
       marginRight: theme.spacing(2)
     },
+    rightSection: {
+      "& button": {
+        margin: "0 .300rem"
+      }
+    },
+    iconWidth: {
+      minWidth: 30
+    },
+    menuText: {
+      fontSize: 14
+    },
+    navButton: {
+      padding: "4px 0",
+      fontSize: 12,
+      fontWeight: 600
+    },
+    iconPadding: {
+      padding: 6
+    },
     title: {
       display: "none",
       [theme.breakpoints.up("sm")]: {

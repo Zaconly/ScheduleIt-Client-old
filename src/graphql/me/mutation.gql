@@ -4,7 +4,20 @@ mutation Login($input: LoginInput!) {
   login(input: $input) {
     ...UserInfo
     role
+    boards {
+      ...BoardInfo
+      tasks {
+        ...TaskInfo
+        tags {
+          ...TagInfo
+        }
+      }
+    }
     createdAt
     updatedAt
   }
+}
+
+mutation Logout {
+  logout
 }

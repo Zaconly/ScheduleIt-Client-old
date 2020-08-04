@@ -11,39 +11,32 @@ export type Scalars = {
   Int: number
   Float: number
   /** A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
-  Date: any
+  Date: Date
   /** A time string at UTC, such as 10:15:30Z, compliant with the `full-time` format outlined in section 5.6 of the RFC 3339profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
-  Time: any
+  Time: Date
   /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
-  DateTime: any
+  DateTime: Date
 }
 
 export type Query = {
   __typename?: "Query"
   _?: Maybe<Scalars["Boolean"]>
-  user?: Maybe<User>
-  allUsers?: Maybe<Array<User>>
-  me: User
-  template?: Maybe<Template>
-  authorTemplates?: Maybe<Array<Template>>
-  allTemplates?: Maybe<Array<Template>>
-  board?: Maybe<Board>
-  userBoards?: Maybe<Array<Board>>
   allBoards?: Maybe<Array<Board>>
-  task?: Maybe<Task>
+  allTemplates?: Maybe<Array<Template>>
+  allUsers?: Maybe<Array<User>>
+  authorTemplates?: Maybe<Array<Template>>
+  board?: Maybe<Board>
   boardTasks?: Maybe<Array<Task>>
-  userTasks?: Maybe<Array<Task>>
+  hasDarkTheme: Scalars["Boolean"]
+  me: User
   tag?: Maybe<Tag>
-  taskTags?: Maybe<Array<Tag>>
   tagTasks?: Maybe<Array<Task>>
-}
-
-export type QueryUserArgs = {
-  id: Scalars["ID"]
-}
-
-export type QueryTemplateArgs = {
-  id: Scalars["ID"]
+  task?: Maybe<Task>
+  taskTags?: Maybe<Array<Tag>>
+  template?: Maybe<Template>
+  user?: Maybe<User>
+  userBoards?: Maybe<Array<Board>>
+  userTasks?: Maybe<Array<Task>>
 }
 
 export type QueryAuthorTemplatesArgs = {
@@ -51,14 +44,6 @@ export type QueryAuthorTemplatesArgs = {
 }
 
 export type QueryBoardArgs = {
-  id: Scalars["ID"]
-}
-
-export type QueryUserBoardsArgs = {
-  userId?: Maybe<Scalars["ID"]>
-}
-
-export type QueryTaskArgs = {
   id: Scalars["ID"]
 }
 
@@ -70,12 +55,28 @@ export type QueryTagArgs = {
   id: Scalars["ID"]
 }
 
+export type QueryTagTasksArgs = {
+  id: Scalars["ID"]
+}
+
+export type QueryTaskArgs = {
+  id: Scalars["ID"]
+}
+
 export type QueryTaskTagsArgs = {
   taskId: Scalars["ID"]
 }
 
-export type QueryTagTasksArgs = {
+export type QueryTemplateArgs = {
   id: Scalars["ID"]
+}
+
+export type QueryUserArgs = {
+  id: Scalars["ID"]
+}
+
+export type QueryUserBoardsArgs = {
+  userId?: Maybe<Scalars["ID"]>
 }
 
 export type Mutation = {
@@ -286,13 +287,35 @@ export type TaskInfoFragment = { __typename?: "Task" } & Pick<Task, "id" | "name
 
 export type TagInfoFragment = { __typename?: "Tag" } & Pick<Tag, "id" | "name">
 
+export type HasDarkThemeQueryVariables = Exact<{ [key: string]: never }>
+
+export type HasDarkThemeQuery = { __typename?: "Query" } & Pick<Query, "hasDarkTheme">
+
 export type LoginMutationVariables = Exact<{
   input: LoginInput
 }>
 
 export type LoginMutation = { __typename?: "Mutation" } & {
-  login: { __typename?: "User" } & Pick<User, "role" | "createdAt" | "updatedAt"> & UserInfoFragment
+  login: { __typename?: "User" } & Pick<User, "role" | "createdAt" | "updatedAt"> & {
+      boards: Array<
+        Maybe<
+          { __typename?: "Board" } & {
+            tasks?: Maybe<
+              Array<
+                { __typename?: "Task" } & {
+                  tags?: Maybe<Array<{ __typename?: "Tag" } & TagInfoFragment>>
+                } & TaskInfoFragment
+              >
+            >
+          } & BoardInfoFragment
+        >
+      >
+    } & UserInfoFragment
 }
+
+export type LogoutMutationVariables = Exact<{ [key: string]: never }>
+
+export type LogoutMutation = { __typename?: "Mutation" } & Pick<Mutation, "logout">
 
 export type MeQueryVariables = Exact<{ [key: string]: never }>
 
@@ -339,16 +362,71 @@ export const TagInfoFragmentDoc = gql`
     name
   }
 `
+export const HasDarkThemeDocument = gql`
+  query HasDarkTheme {
+    hasDarkTheme @client
+  }
+`
+
+/**
+ * __useHasDarkThemeQuery__
+ *
+ * To run a query within a React component, call `useHasDarkThemeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useHasDarkThemeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useHasDarkThemeQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useHasDarkThemeQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<HasDarkThemeQuery, HasDarkThemeQueryVariables>
+) {
+  return ApolloReactHooks.useQuery<HasDarkThemeQuery, HasDarkThemeQueryVariables>(
+    HasDarkThemeDocument,
+    baseOptions
+  )
+}
+export function useHasDarkThemeLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<HasDarkThemeQuery, HasDarkThemeQueryVariables>
+) {
+  return ApolloReactHooks.useLazyQuery<HasDarkThemeQuery, HasDarkThemeQueryVariables>(
+    HasDarkThemeDocument,
+    baseOptions
+  )
+}
+export type HasDarkThemeQueryHookResult = ReturnType<typeof useHasDarkThemeQuery>
+export type HasDarkThemeLazyQueryHookResult = ReturnType<typeof useHasDarkThemeLazyQuery>
+export type HasDarkThemeQueryResult = ApolloReactCommon.QueryResult<
+  HasDarkThemeQuery,
+  HasDarkThemeQueryVariables
+>
 export const LoginDocument = gql`
   mutation Login($input: LoginInput!) {
     login(input: $input) {
       ...UserInfo
       role
+      boards {
+        ...BoardInfo
+        tasks {
+          ...TaskInfo
+          tags {
+            ...TagInfo
+          }
+        }
+      }
       createdAt
       updatedAt
     }
   }
   ${UserInfoFragmentDoc}
+  ${BoardInfoFragmentDoc}
+  ${TaskInfoFragmentDoc}
+  ${TagInfoFragmentDoc}
 `
 export type LoginMutationFn = ApolloReactCommon.MutationFunction<
   LoginMutation,
@@ -385,6 +463,46 @@ export type LoginMutationResult = ApolloReactCommon.MutationResult<LoginMutation
 export type LoginMutationOptions = ApolloReactCommon.BaseMutationOptions<
   LoginMutation,
   LoginMutationVariables
+>
+export const LogoutDocument = gql`
+  mutation Logout {
+    logout
+  }
+`
+export type LogoutMutationFn = ApolloReactCommon.MutationFunction<
+  LogoutMutation,
+  LogoutMutationVariables
+>
+
+/**
+ * __useLogoutMutation__
+ *
+ * To run a mutation, you first call `useLogoutMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLogoutMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [logoutMutation, { data, loading, error }] = useLogoutMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useLogoutMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<LogoutMutation, LogoutMutationVariables>
+) {
+  return ApolloReactHooks.useMutation<LogoutMutation, LogoutMutationVariables>(
+    LogoutDocument,
+    baseOptions
+  )
+}
+export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>
+export type LogoutMutationResult = ApolloReactCommon.MutationResult<LogoutMutation>
+export type LogoutMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  LogoutMutation,
+  LogoutMutationVariables
 >
 export const MeDocument = gql`
   query Me {

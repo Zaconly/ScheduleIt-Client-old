@@ -1,8 +1,10 @@
 overwrite: true
-schema: "http://localhost:4000/graphql"
+schema:
+  - "http://localhost:4000/graphql"
+  - "src/graphql/local/types.gql"
 documents: "src/graphql/**/*.gql"
 generates:
-  src/generated/graphql.tsx:
+  src/generated/graphql.ts:
     plugins:
       - "typescript"
       - "typescript-operations"
@@ -12,6 +14,10 @@ generates:
       withHooks: true
       withHOC: false
       withComponent: false
+      scalars:
+        DateTime: Date
+        Date: Date
+        Time: Date
 hooks:
   afterAllFileWrite:
     - eslint --fix .
