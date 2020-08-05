@@ -1,3 +1,10 @@
+type ModalContext {
+  id: String!
+  isOpen: Boolean!
+  currentTab: String
+}
+
 extend type Query {
   hasDarkTheme: Boolean!
+  modalContext: ModalContext
 }

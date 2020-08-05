@@ -1,8 +1,7 @@
 import { ClickAwayListener, Grow, MenuList, MenuListProps, Paper, Popper } from "@material-ui/core"
-import { Dispatch, ReactNode, RefObject, SetStateAction, useEffect, useRef } from "react"
+import { Dispatch, RefObject, SetStateAction, useEffect, useRef } from "react"
 
 interface Props extends MenuListProps {
-  children: ReactNode
   open: boolean
   setOpen: Dispatch<SetStateAction<boolean>>
   anchorRef: RefObject<HTMLButtonElement>

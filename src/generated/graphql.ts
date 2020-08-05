@@ -29,6 +29,7 @@ export type Query = {
   boardTasks?: Maybe<Array<Task>>
   hasDarkTheme: Scalars["Boolean"]
   me: User
+  modalContext?: Maybe<ModalContext>
   tag?: Maybe<Tag>
   tagTasks?: Maybe<Array<Task>>
   task?: Maybe<Task>
@@ -279,6 +280,13 @@ export type Tag = {
   color?: Maybe<Scalars["String"]>
 }
 
+export type ModalContext = {
+  __typename?: "ModalContext"
+  id: Scalars["String"]
+  isOpen: Scalars["Boolean"]
+  currentTab?: Maybe<Scalars["String"]>
+}
+
 export type UserInfoFragment = { __typename?: "User" } & Pick<User, "id" | "username" | "email">
 
 export type BoardInfoFragment = { __typename?: "Board" } & Pick<Board, "id" | "name">
@@ -291,12 +299,42 @@ export type HasDarkThemeQueryVariables = Exact<{ [key: string]: never }>
 
 export type HasDarkThemeQuery = { __typename?: "Query" } & Pick<Query, "hasDarkTheme">
 
+export type ModalContextQueryVariables = Exact<{ [key: string]: never }>
+
+export type ModalContextQuery = { __typename?: "Query" } & {
+  modalContext?: Maybe<
+    { __typename?: "ModalContext" } & Pick<ModalContext, "id" | "isOpen" | "currentTab">
+  >
+}
+
 export type LoginMutationVariables = Exact<{
   input: LoginInput
 }>
 
 export type LoginMutation = { __typename?: "Mutation" } & {
   login: { __typename?: "User" } & Pick<User, "role" | "createdAt" | "updatedAt"> & {
+      boards: Array<
+        Maybe<
+          { __typename?: "Board" } & {
+            tasks?: Maybe<
+              Array<
+                { __typename?: "Task" } & {
+                  tags?: Maybe<Array<{ __typename?: "Tag" } & TagInfoFragment>>
+                } & TaskInfoFragment
+              >
+            >
+          } & BoardInfoFragment
+        >
+      >
+    } & UserInfoFragment
+}
+
+export type RegisterMutationVariables = Exact<{
+  input: RegisterInput
+}>
+
+export type RegisterMutation = { __typename?: "Mutation" } & {
+  register: { __typename?: "User" } & Pick<User, "role" | "createdAt" | "updatedAt"> & {
       boards: Array<
         Maybe<
           { __typename?: "Board" } & {
@@ -405,6 +443,53 @@ export type HasDarkThemeQueryResult = ApolloReactCommon.QueryResult<
   HasDarkThemeQuery,
   HasDarkThemeQueryVariables
 >
+export const ModalContextDocument = gql`
+  query ModalContext {
+    modalContext @client {
+      id
+      isOpen
+      currentTab
+    }
+  }
+`
+
+/**
+ * __useModalContextQuery__
+ *
+ * To run a query within a React component, call `useModalContextQuery` and pass it any options that fit your needs.
+ * When your component renders, `useModalContextQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useModalContextQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useModalContextQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<ModalContextQuery, ModalContextQueryVariables>
+) {
+  return ApolloReactHooks.useQuery<ModalContextQuery, ModalContextQueryVariables>(
+    ModalContextDocument,
+    baseOptions
+  )
+}
+export function useModalContextLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<ModalContextQuery, ModalContextQueryVariables>
+) {
+  return ApolloReactHooks.useLazyQuery<ModalContextQuery, ModalContextQueryVariables>(
+    ModalContextDocument,
+    baseOptions
+  )
+}
+export type ModalContextQueryHookResult = ReturnType<typeof useModalContextQuery>
+export type ModalContextLazyQueryHookResult = ReturnType<typeof useModalContextLazyQuery>
+export type ModalContextQueryResult = ApolloReactCommon.QueryResult<
+  ModalContextQuery,
+  ModalContextQueryVariables
+>
 export const LoginDocument = gql`
   mutation Login($input: LoginInput!) {
     login(input: $input) {
@@ -463,6 +548,65 @@ export type LoginMutationResult = ApolloReactCommon.MutationResult<LoginMutation
 export type LoginMutationOptions = ApolloReactCommon.BaseMutationOptions<
   LoginMutation,
   LoginMutationVariables
+>
+export const RegisterDocument = gql`
+  mutation Register($input: RegisterInput!) {
+    register(input: $input) {
+      ...UserInfo
+      role
+      boards {
+        ...BoardInfo
+        tasks {
+          ...TaskInfo
+          tags {
+            ...TagInfo
+          }
+        }
+      }
+      createdAt
+      updatedAt
+    }
+  }
+  ${UserInfoFragmentDoc}
+  ${BoardInfoFragmentDoc}
+  ${TaskInfoFragmentDoc}
+  ${TagInfoFragmentDoc}
+`
+export type RegisterMutationFn = ApolloReactCommon.MutationFunction<
+  RegisterMutation,
+  RegisterMutationVariables
+>
+
+/**
+ * __useRegisterMutation__
+ *
+ * To run a mutation, you first call `useRegisterMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRegisterMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [registerMutation, { data, loading, error }] = useRegisterMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useRegisterMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<RegisterMutation, RegisterMutationVariables>
+) {
+  return ApolloReactHooks.useMutation<RegisterMutation, RegisterMutationVariables>(
+    RegisterDocument,
+    baseOptions
+  )
+}
+export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>
+export type RegisterMutationResult = ApolloReactCommon.MutationResult<RegisterMutation>
+export type RegisterMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  RegisterMutation,
+  RegisterMutationVariables
 >
 export const LogoutDocument = gql`
   mutation Logout {

@@ -1,3 +1,11 @@
 query HasDarkTheme {
   hasDarkTheme @client
 }
+
+query ModalContext {
+  modalContext @client {
+    id
+    isOpen
+    currentTab
+  }
+}

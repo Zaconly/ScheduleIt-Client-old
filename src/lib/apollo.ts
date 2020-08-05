@@ -1,7 +1,7 @@
 import { ApolloClient, HttpLink, InMemoryCache, NormalizedCacheObject } from "@apollo/client"
 import { useMemo } from "react"
 
-import { darkThemeVar } from "../apollo"
+import { darkThemeVar, modalContextVar } from "../apollo"
 
 let apolloClient: ApolloClient<NormalizedCacheObject | null>
 
@@ -22,6 +22,11 @@ function createApolloClient(cookie = "") {
             hasDarkTheme: {
               read() {
                 return darkThemeVar()
+              }
+            },
+            modalContext: {
+              read() {
+                return modalContextVar()
               }
             }
           }

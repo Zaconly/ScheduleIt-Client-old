@@ -18,6 +18,24 @@ mutation Login($input: LoginInput!) {
   }
 }
 
+mutation Register($input: RegisterInput!) {
+  register(input: $input) {
+    ...UserInfo
+    role
+    boards {
+      ...BoardInfo
+      tasks {
+        ...TaskInfo
+        tags {
+          ...TagInfo
+        }
+      }
+    }
+    createdAt
+    updatedAt
+  }
+}
+
 mutation Logout {
   logout
 }

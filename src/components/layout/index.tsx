@@ -1,11 +1,12 @@
-import { AppBar, Badge, IconButton, Toolbar, Typography } from "@material-ui/core"
+import { AppBar, Badge, Button, IconButton, Toolbar, Typography } from "@material-ui/core"
 import { Notifications as NotificationsIcon, Portrait as PortraitIcon } from "@material-ui/icons"
 import Head from "next/head"
 import { ReactNode, useRef, useState } from "react"
 
+import { modalContextVar } from "../../apollo"
 import { useIsLoggedIn } from "../../utils/customHooks"
-import { Login } from "../auth"
-import { FlatButton, OwnMenu } from "../custom"
+import { AuthModal } from "../auth"
+import { OwnMenu } from "../custom"
 import HeaderMenuItems from "./HeaderMenuItems"
 import { useStyles } from "./style"
 
@@ -17,12 +18,20 @@ interface Props {
 
 const Layout = ({ children, title, home = false }: Props) => {
   const classes = useStyles()
-  const [open, setOpen] = useState(false)
+  const [openMenu, setOpenMenu] = useState(false)
   const anchorRef = useRef<HTMLButtonElement>(null)
   const isLoggedIn = useIsLoggedIn()
 
   const handleToggle = () => {
-    setOpen(prevOpen => !prevOpen)
+    setOpenMenu(prevOpen => !prevOpen)
+  }
+
+  const handleOpenAuthModal = (type: "login" | "register") => {
+    modalContextVar({
+      id: "AuthModal",
+      isOpen: true,
+      currentTab: type
+    })
   }
 
   return (
@@ -50,16 +59,30 @@ const Layout = ({ children, title, home = false }: Props) => {
                 </IconButton>
               ) : (
                 <>
-                  <Login className={classes.navButton} />
-                  <FlatButton variant="contained" className={classes.navButton} color="primary">
+                  <Button
+                    variant="contained"
+                    className={classes.navButton}
+                    disableElevation
+                    onClick={() => handleOpenAuthModal("login")}
+                  >
+                    Log In
+                  </Button>
+                  <Button
+                    variant="contained"
+                    className={classes.navButton}
+                    color="primary"
+                    disableElevation
+                    onClick={() => handleOpenAuthModal("register")}
+                  >
                     Sign Up
-                  </FlatButton>
+                  </Button>
+                  <AuthModal />
                 </>
               )}
               <IconButton
                 ref={anchorRef}
                 edge="end"
-                aria-controls={open ? "menu-list-grow" : undefined}
+                aria-controls={openMenu ? "menu-list-grow" : undefined}
                 aria-haspopup="true"
                 color="inherit"
                 className={classes.iconPadding}
@@ -68,12 +91,12 @@ const Layout = ({ children, title, home = false }: Props) => {
                 <PortraitIcon />
               </IconButton>
               <OwnMenu
-                open={open}
-                setOpen={setOpen}
+                open={openMenu}
+                setOpen={setOpenMenu}
                 anchorRef={anchorRef}
                 style={{ minWidth: 200 }}
               >
-                <HeaderMenuItems setOpen={setOpen} />
+                <HeaderMenuItems setOpen={setOpenMenu} />
               </OwnMenu>
             </div>
           </div>
