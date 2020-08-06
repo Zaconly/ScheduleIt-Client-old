@@ -1,14 +1,20 @@
+// @ts-nocheck
+
 import { createMuiTheme, CssBaseline, Theme, ThemeProvider, useMediaQuery } from "@material-ui/core"
-import { deepOrange, purple } from "@material-ui/core/colors"
+import { purple } from "@material-ui/core/colors"
 import { AppProps } from "next/app"
 import { useEffect, useMemo } from "react"
 
 import { darkThemeVar } from "../../apollo"
 import { useHasDarkThemeQuery } from "../../generated/graphql"
+import { Layout as MainLayout } from "../layouts"
 
 const AppComponent = ({ Component, pageProps }: AppProps) => {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)")
   const { data } = useHasDarkThemeQuery()
+
+  // @ts-ignore
+  const SubLayout = Component.Layout || DefaultLayout
 
   const mode =
     data?.hasDarkTheme === null
@@ -42,7 +48,8 @@ const AppComponent = ({ Component, pageProps }: AppProps) => {
             contrastText: "#FFF"
           },
           secondary: {
-            main: deepOrange[900] // TODO: Seek nice colors
+            main: "#FC6675",
+            contrastText: "#000"
           }
         },
         overrides: {
@@ -75,6 +82,13 @@ const AppComponent = ({ Component, pageProps }: AppProps) => {
               marginLeft: 0,
               marginRight: 0
             }
+          },
+          MuiPaper: {
+            elevation1: {
+              boxShadow: isLight
+                ? "0 2px 10px 0 rgba(23,70,161,.11)"
+                : "0 2px 10px 0 rgba(0, 0, 0, 1)"
+            }
           }
         }
       }),
@@ -94,9 +108,15 @@ const AppComponent = ({ Component, pageProps }: AppProps) => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Component {...pageProps} />
+      <MainLayout mode={Component.mainLayoutMode || "classic"}>
+        <SubLayout>
+          <Component {...pageProps} />
+        </SubLayout>
+      </MainLayout>
     </ThemeProvider>
   )
 }
+
+const DefaultLayout = ({ children }: { children: JSX.Element }) => <>{children}</>
 
 export default AppComponent

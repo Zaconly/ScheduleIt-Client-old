@@ -25,7 +25,22 @@ export const useStyles = makeStyles((theme: Theme) =>
       fontWeight: 600
     },
     iconPadding: {
-      padding: 6
+      padding: 3
+    },
+    avatarAuth: {
+      backgroundColor: theme.palette.secondary.main,
+      padding: 0,
+      color: theme.palette.secondary.contrastText,
+      "&:hover": {
+        backgroundColor: theme.palette.secondary[theme.palette.type]
+      }
+    },
+    avatarAnon: {
+      padding: 0
+    },
+    avatarSize: {
+      width: 30,
+      height: 30
     },
     title: {
       display: "none",

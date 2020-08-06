@@ -1,22 +1,24 @@
 import { AppBar, Badge, Button, IconButton, Toolbar, Typography } from "@material-ui/core"
-import { Notifications as NotificationsIcon, Portrait as PortraitIcon } from "@material-ui/icons"
-import Head from "next/head"
+import {
+  Notifications as NotificationsIcon,
+  PersonOutline as AccountIcon
+} from "@material-ui/icons"
+import Link from "next/link"
 import { ReactNode, useRef, useState } from "react"
 
-import { modalContextVar } from "../../apollo"
-import { useIsLoggedIn } from "../../utils/customHooks"
-import { AuthModal } from "../auth"
-import { OwnMenu } from "../custom"
+import { modalContextVar } from "../../../apollo"
+import { useIsLoggedIn } from "../../../utils/customHooks"
+import { AuthModal } from "../../auth"
+import { OwnMenu } from "../../custom"
 import HeaderMenuItems from "./HeaderMenuItems"
 import { useStyles } from "./style"
 
 interface Props {
   children: ReactNode
-  title?: string
-  mode?: "classic" | "home" | "clean"
+  mode: "classic" | "home" | "clean"
 }
 
-const Layout = ({ children, title, mode = "classic" }: Props) => {
+const Layout = ({ children, mode }: Props) => {
   const classes = useStyles()
   const [openMenu, setOpenMenu] = useState(false)
   const anchorRef = useRef<HTMLButtonElement>(null)
@@ -36,15 +38,13 @@ const Layout = ({ children, title, mode = "classic" }: Props) => {
 
   return (
     <>
-      <Head>
-        <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
-        <title>{title ? `${title} - ScheduleIt` : "ScheduleIt"}</title>
-      </Head>
       <AppBar position="static" color="inherit" elevation={0}>
         <Toolbar>
-          <Typography className={classes.title} variant="h6" noWrap>
-            ScheduleIt
-          </Typography>
+          <Link href="/" passHref>
+            <Typography component="a" className={classes.title} variant="h6" noWrap>
+              ScheduleIt
+            </Typography>
+          </Link>
           {mode !== "clean" && (
             <>
               <div className={classes.grow} />
@@ -87,11 +87,11 @@ const Layout = ({ children, title, mode = "classic" }: Props) => {
                     edge="end"
                     aria-controls={openMenu ? "menu-list-grow" : undefined}
                     aria-haspopup="true"
-                    color="inherit"
-                    className={classes.iconPadding}
+                    color="secondary"
+                    className={isLoggedIn ? classes.avatarAuth : classes.avatarAnon}
                     onClick={handleToggle}
                   >
-                    <PortraitIcon />
+                    <AccountIcon />
                   </IconButton>
                   <OwnMenu
                     open={openMenu}

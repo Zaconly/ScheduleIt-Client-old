@@ -1,3 +1,8 @@
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 @keyframes opacity--in {
   from {
     opacity: 0;

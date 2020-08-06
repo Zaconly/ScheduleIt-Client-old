@@ -1,5 +1,6 @@
 export { default as OwnMenu } from "./OwnMenu"
 export { default as OwnAlert } from "./OwnAlert"
+export { default as OwnHead } from "./OwnHead"
 export { default as AppComponent } from "./AppComponent"
 export { default as LoadingButton } from "./LoadingButton"
 export { default as TextAction } from "./TextAction"

@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next"
 
-import Layout from "../components/layout"
+import { OwnHead as Head } from "../components/custom"
 import { MeDocument, useMeQuery } from "../generated/graphql"
 import apolloQuerySsr from "../utils/apolloQuerySsr"
 
@@ -8,9 +8,10 @@ const Index = () => {
   const { data } = useMeQuery()
 
   return (
-    <Layout mode="home">
+    <>
+      <Head />
       <pre>{JSON.stringify(data, null, 2)}</pre>
-    </Layout>
+    </>
   )
 }
 
