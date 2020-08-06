@@ -29,8 +29,10 @@ const ForgotPasswordForm = () => {
     forgotPasswordMutation({ variables: { email } })
       .then(() => {
         setSuccess(true)
+        setErrorMsg(false)
       })
       .catch(() => {
+        setSuccess(false)
         setErrorMsg(true)
       })
   }

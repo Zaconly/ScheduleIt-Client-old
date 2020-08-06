@@ -16,6 +16,7 @@ export type Scalars = {
   Time: Date
   /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
   DateTime: Date
+  Void: any
 }
 
 export type Query = {
@@ -88,10 +89,10 @@ export type Mutation = {
   deleteUser?: Maybe<Scalars["Boolean"]>
   login: User
   register: User
-  logout: Scalars["Boolean"]
-  forgotPassword: Scalars["Boolean"]
-  resetPassword: Scalars["Boolean"]
-  changePassword: Scalars["Boolean"]
+  logout?: Maybe<Scalars["Void"]>
+  forgotPassword?: Maybe<Scalars["Void"]>
+  resetPassword?: Maybe<Scalars["Void"]>
+  changePassword?: Maybe<Scalars["Void"]>
   addTemplate?: Maybe<Template>
   updateTemplate?: Maybe<Template>
   deleteTemplate?: Maybe<Scalars["Boolean"]>
@@ -366,6 +367,13 @@ export type ResetPasswordMutationVariables = Exact<{
 }>
 
 export type ResetPasswordMutation = { __typename?: "Mutation" } & Pick<Mutation, "resetPassword">
+
+export type ChangePasswordMutationVariables = Exact<{
+  oldPassword: Scalars["String"]
+  newPassword: Scalars["String"]
+}>
+
+export type ChangePasswordMutation = { __typename?: "Mutation" } & Pick<Mutation, "changePassword">
 
 export type MeQueryVariables = Exact<{ [key: string]: never }>
 
@@ -748,6 +756,51 @@ export type ResetPasswordMutationResult = ApolloReactCommon.MutationResult<Reset
 export type ResetPasswordMutationOptions = ApolloReactCommon.BaseMutationOptions<
   ResetPasswordMutation,
   ResetPasswordMutationVariables
+>
+export const ChangePasswordDocument = gql`
+  mutation ChangePassword($oldPassword: String!, $newPassword: String!) {
+    changePassword(oldPassword: $oldPassword, newPassword: $newPassword)
+  }
+`
+export type ChangePasswordMutationFn = ApolloReactCommon.MutationFunction<
+  ChangePasswordMutation,
+  ChangePasswordMutationVariables
+>
+
+/**
+ * __useChangePasswordMutation__
+ *
+ * To run a mutation, you first call `useChangePasswordMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChangePasswordMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [changePasswordMutation, { data, loading, error }] = useChangePasswordMutation({
+ *   variables: {
+ *      oldPassword: // value for 'oldPassword'
+ *      newPassword: // value for 'newPassword'
+ *   },
+ * });
+ */
+export function useChangePasswordMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    ChangePasswordMutation,
+    ChangePasswordMutationVariables
+  >
+) {
+  return ApolloReactHooks.useMutation<ChangePasswordMutation, ChangePasswordMutationVariables>(
+    ChangePasswordDocument,
+    baseOptions
+  )
+}
+export type ChangePasswordMutationHookResult = ReturnType<typeof useChangePasswordMutation>
+export type ChangePasswordMutationResult = ApolloReactCommon.MutationResult<ChangePasswordMutation>
+export type ChangePasswordMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  ChangePasswordMutation,
+  ChangePasswordMutationVariables
 >
 export const MeDocument = gql`
   query Me {

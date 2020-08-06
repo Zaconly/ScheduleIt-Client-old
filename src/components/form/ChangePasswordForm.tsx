@@ -1,33 +1,35 @@
 import { Box, TextField } from "@material-ui/core"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 
-import { useResetPasswordMutation } from "../../generated/graphql"
+import { useChangePasswordMutation } from "../../generated/graphql"
 import { LoadingButton, OwnAlert } from "../custom"
 
-interface ResetPasswordInputs {
+interface ChangePasswordInputs {
+  oldPassword: string
   newPassword: string
   confirmNewPassword: string
 }
 
-interface Props {
-  token: string
-}
-
-const ResetPasswordForm = ({ token }: Props) => {
-  const { register, handleSubmit, getValues, errors, formState } = useForm<ResetPasswordInputs>({
+const ChangePasswordForm = () => {
+  const { register, handleSubmit, getValues, errors, formState } = useForm<ChangePasswordInputs>({
     mode: "onChange"
   })
+  const [init, setInit] = useState(false)
   const [success, setSuccess] = useState(false)
   const [errorMsg, setErrorMsg] = useState(false)
 
-  const [resetPasswordMutation, { loading, error }] = useResetPasswordMutation()
+  useEffect(() => {
+    setInit(true)
+  }, [init])
 
-  const onSubmit = ({ newPassword }: ResetPasswordInputs) => {
-    resetPasswordMutation({
+  const [changePasswordMutation, { loading, error }] = useChangePasswordMutation()
+
+  const onSubmit = ({ oldPassword, newPassword }: ChangePasswordInputs) => {
+    changePasswordMutation({
       variables: {
-        newPassword,
-        token
+        oldPassword,
+        newPassword
       }
     })
       .then(() => {
@@ -43,19 +45,31 @@ const ResetPasswordForm = ({ token }: Props) => {
   return (
     <form noValidate onSubmit={handleSubmit(onSubmit)}>
       <OwnAlert open={success} severity="success" style={{ margin: "10px 0" }}>
-        Your password has been successfully reset. You can now connect using your new password.
+        Your password has been successfully changed.
       </OwnAlert>
       <OwnAlert open={errorMsg} severity="error" style={{ margin: "10px 0" }}>
         {error?.message}
       </OwnAlert>
 
       <TextField
+        id="oldPassword"
+        name="oldPassword"
+        label="Current Password"
+        type="password"
+        variant="outlined"
+        error={!!errors.oldPassword && !!errors.oldPassword.message}
+        helperText={!!errors.oldPassword && errors.oldPassword.message}
+        fullWidth
+        margin="normal"
+        inputRef={register({ required: true })}
+      />
+      <TextField
         id="newPassword"
         name="newPassword"
         label="Password"
         type="password"
         variant="outlined"
-        error={!!errors.newPassword}
+        error={!!errors.newPassword && !!errors.newPassword.message}
         helperText={!!errors.newPassword && errors.newPassword.message}
         fullWidth
         margin="normal"
@@ -77,7 +91,7 @@ const ResetPasswordForm = ({ token }: Props) => {
         label="Confirm Password"
         type="password"
         variant="outlined"
-        error={!!errors.confirmNewPassword}
+        error={!!errors.confirmNewPassword && !!errors.confirmNewPassword.message}
         helperText={!!errors.confirmNewPassword && errors.confirmNewPassword.message}
         fullWidth
         margin="normal"
@@ -97,14 +111,14 @@ const ResetPasswordForm = ({ token }: Props) => {
           variant="contained"
           type="submit"
           fullWidth
-          disabled={success || errorMsg || loading || !formState.isValid}
+          disabled={!init || success || loading || !formState.isValid}
           loading={loading}
         >
-          Reset
+          Confirm
         </LoadingButton>
       </Box>
     </form>
   )
 }
 
-export default ResetPasswordForm
+export default ChangePasswordForm

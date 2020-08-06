@@ -47,3 +47,7 @@ mutation ForgotPassword($email: String!) {
 mutation ResetPassword($token: String!, $newPassword: String!) {
   resetPassword(token: $token, newPassword: $newPassword)
 }
+
+mutation ChangePassword($oldPassword: String!, $newPassword: String!) {
+  changePassword(oldPassword: $oldPassword, newPassword: $newPassword)
+}

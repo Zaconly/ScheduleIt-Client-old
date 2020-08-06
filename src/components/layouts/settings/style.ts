@@ -6,7 +6,8 @@ export const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
     settingsWrapper: {
       display: "flex",
-      marginTop: 100
+      marginTop: 100,
+      alignItems: "flex-start"
     },
     tabsWrapper: {
       marginRight: spacing,
