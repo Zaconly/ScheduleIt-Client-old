@@ -8,7 +8,7 @@ const Index = () => {
   const { data } = useMeQuery()
 
   return (
-    <Layout home>
+    <Layout mode="home">
       <pre>{JSON.stringify(data, null, 2)}</pre>
     </Layout>
   )

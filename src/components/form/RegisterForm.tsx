@@ -1,18 +1,9 @@
-import {
-  Button,
-  Collapse,
-  DialogActions,
-  DialogContent,
-  IconButton,
-  TextField
-} from "@material-ui/core"
-import CloseIcon from "@material-ui/icons/Close"
-import Alert from "@material-ui/lab/Alert"
-import { useState } from "react"
+import { DialogActions, DialogContent, TextField } from "@material-ui/core"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 
 import { MeDocument, useRegisterMutation } from "../../generated/graphql"
-import { LoadingButton } from "../custom"
+import { LoadingButton, OwnAlert } from "../custom"
 import { useStyles } from "./style"
 
 interface RegisterInputs {
@@ -29,9 +20,14 @@ interface Props {
 const RegisterForm = ({ handleClose }: Props) => {
   const classes = useStyles()
   const [open, setOpen] = useState(false)
+  const [init, setInit] = useState(false)
   const { register, handleSubmit, getValues, errors, formState } = useForm<RegisterInputs>({
     mode: "onChange"
   })
+
+  useEffect(() => {
+    setInit(true)
+  }, [init])
 
   const [registerMutation, { loading, error }] = useRegisterMutation()
 
@@ -60,26 +56,9 @@ const RegisterForm = ({ handleClose }: Props) => {
   return (
     <form noValidate onSubmit={handleSubmit(onSubmit)}>
       <DialogContent classes={{ root: classes.dialogContentRoot }}>
-        <Collapse in={open}>
-          <Alert
-            severity="error"
-            variant="filled"
-            action={
-              <IconButton
-                aria-label="close"
-                color="inherit"
-                size="small"
-                onClick={() => {
-                  setOpen(false)
-                }}
-              >
-                <CloseIcon fontSize="inherit" />
-              </IconButton>
-            }
-          >
-            {error?.message}
-          </Alert>
-        </Collapse>
+        <OwnAlert open={open} severity="error" closeButton>
+          {error?.message}
+        </OwnAlert>
 
         <TextField
           autoFocus
@@ -88,7 +67,7 @@ const RegisterForm = ({ handleClose }: Props) => {
           label="Username"
           type="text"
           variant="outlined"
-          error={!!errors.username}
+          error={!!errors.username && !!errors.username.message}
           helperText={!!errors.username && errors.username.message}
           fullWidth
           margin="normal"
@@ -110,11 +89,17 @@ const RegisterForm = ({ handleClose }: Props) => {
           label="Email"
           type="email"
           variant="outlined"
-          error={!!errors.email}
+          error={!!errors.email && !!errors.email.message}
           helperText={!!errors.email && errors.email.message}
           fullWidth
           margin="normal"
-          inputRef={register({ required: true })}
+          inputRef={register({
+            required: true,
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+              message: "*Email address must be valid."
+            }
+          })}
         />
         <TextField
           id="password"
@@ -122,7 +107,7 @@ const RegisterForm = ({ handleClose }: Props) => {
           label="Password"
           type="password"
           variant="outlined"
-          error={!!errors.password}
+          error={!!errors.password && !!errors.password.message}
           helperText={!!errors.password && errors.password.message}
           fullWidth
           margin="normal"
@@ -144,7 +129,7 @@ const RegisterForm = ({ handleClose }: Props) => {
           label="Confirm Password"
           type="password"
           variant="outlined"
-          error={!!errors.confirmPassword}
+          error={!!errors.confirmPassword && !!errors.confirmPassword.message}
           helperText={!!errors.confirmPassword && errors.confirmPassword.message}
           fullWidth
           margin="normal"
@@ -153,7 +138,7 @@ const RegisterForm = ({ handleClose }: Props) => {
             validate: {
               matchesPreviousPassword: (value: string) => {
                 const { password } = getValues()
-                return password === value || "*Passwords must be identical"
+                return password === value || "*Passwords must be identical."
               }
             }
           })}
@@ -165,7 +150,7 @@ const RegisterForm = ({ handleClose }: Props) => {
           variant="contained"
           type="submit"
           fullWidth
-          disabled={loading || !formState.isValid}
+          disabled={!init || loading || !formState.isValid}
           loading={loading}
         >
           Sign Up

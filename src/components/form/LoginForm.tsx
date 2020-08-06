@@ -1,18 +1,10 @@
-import {
-  Collapse,
-  DialogActions,
-  DialogContent,
-  IconButton,
-  TextField,
-  Typography
-} from "@material-ui/core"
-import CloseIcon from "@material-ui/icons/Close"
-import Alert from "@material-ui/lab/Alert"
-import { useState } from "react"
+import { DialogActions, DialogContent, TextField } from "@material-ui/core"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 
 import { MeDocument, useLoginMutation } from "../../generated/graphql"
-import { LoadingButton } from "../custom"
+import { LoadingButton, OwnAlert, TextAction } from "../custom"
+import ForgotPasswordForm from "./ForgotPasswordForm"
 import { useStyles } from "./style"
 
 interface LoginInputs {
@@ -27,9 +19,15 @@ interface Props {
 const LoginForm = ({ handleClose }: Props) => {
   const classes = useStyles()
   const [open, setOpen] = useState(false)
-  const { register, handleSubmit, errors, formState } = useForm<LoginInputs>({
+  const [init, setInit] = useState(false)
+  const [forgotPwdForm, setForgotPwdForm] = useState(false)
+  const { register, handleSubmit, formState } = useForm<LoginInputs>({
     mode: "onChange"
   })
+
+  useEffect(() => {
+    setInit(true)
+  }, [init])
 
   const [loginMutation, { loading, error }] = useLoginMutation()
 
@@ -56,69 +54,56 @@ const LoginForm = ({ handleClose }: Props) => {
   }
 
   return (
-    <form noValidate onSubmit={handleSubmit(onSubmit)}>
-      <DialogContent classes={{ root: classes.dialogContentRoot }}>
-        <Collapse in={open}>
-          <Alert
-            severity="error"
-            variant="filled"
-            action={
-              <IconButton
-                aria-label="close"
-                color="inherit"
-                size="small"
-                onClick={() => {
-                  setOpen(false)
-                }}
-              >
-                <CloseIcon fontSize="inherit" />
-              </IconButton>
-            }
-          >
-            {error?.message}
-          </Alert>
-        </Collapse>
+    <>
+      {!forgotPwdForm ? (
+        <form noValidate onSubmit={handleSubmit(onSubmit)}>
+          <DialogContent classes={{ root: classes.dialogContentRoot }}>
+            <OwnAlert open={open} severity="error" closeButton>
+              {error?.message}
+            </OwnAlert>
 
-        <TextField
-          autoFocus
-          id="identifier"
-          name="identifier"
-          label="E-Mail or Username"
-          type="text"
-          variant="outlined"
-          error={!!errors.identifier}
-          helperText={!!errors.identifier && errors.identifier.message}
-          fullWidth
-          margin="normal"
-          inputRef={register({ required: true })}
-        />
-        <TextField
-          id="password"
-          name="password"
-          label="Password"
-          type="password"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          inputRef={register({ required: true })}
-        />
-        <Typography color="primary" variant="caption">
-          Forgot your password?
-        </Typography>
-      </DialogContent>
-      <DialogActions className={classes.dialogAction}>
-        <LoadingButton
-          color="primary"
-          variant="contained"
-          type="submit"
-          fullWidth
-          disabled={loading || !formState.isValid}
-          loading={loading}
-        >
-          Log In
-        </LoadingButton>
-      </DialogActions>
-    </form>
+            <TextField
+              autoFocus
+              id="identifier"
+              name="identifier"
+              label="E-Mail or Username"
+              type="text"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              inputRef={register({ required: true })}
+            />
+            <TextField
+              id="password"
+              name="password"
+              label="Password"
+              type="password"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              inputRef={register({ required: true })}
+            />
+            <TextAction color="primary" variant="caption" onClick={() => setForgotPwdForm(true)}>
+              Forgot your password?
+            </TextAction>
+          </DialogContent>
+          <DialogActions className={classes.dialogAction}>
+            <LoadingButton
+              color="primary"
+              variant="contained"
+              type="submit"
+              fullWidth
+              disabled={!init || loading || !formState.isValid}
+              loading={loading}
+            >
+              Log In
+            </LoadingButton>
+          </DialogActions>
+        </form>
+      ) : (
+        <ForgotPasswordForm />
+      )}
+    </>
   )
 }
 

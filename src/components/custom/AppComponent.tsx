@@ -65,6 +65,16 @@ const AppComponent = ({ Component, pageProps }: AppProps) => {
               borderWidth: 2,
               transition: "border-color 225ms"
             }
+          },
+          MuiFormHelperText: {
+            root: {
+              height: 10,
+              animation: "opacity--in 150ms, helpers-height--in 150ms"
+            },
+            contained: {
+              marginLeft: 0,
+              marginRight: 0
+            }
           }
         }
       }),

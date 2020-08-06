@@ -13,10 +13,10 @@ import { useStyles } from "./style"
 interface Props {
   children: ReactNode
   title?: string
-  home?: boolean
+  mode?: "classic" | "home" | "clean"
 }
 
-const Layout = ({ children, title, home = false }: Props) => {
+const Layout = ({ children, title, mode = "classic" }: Props) => {
   const classes = useStyles()
   const [openMenu, setOpenMenu] = useState(false)
   const anchorRef = useRef<HTMLButtonElement>(null)
@@ -37,6 +37,7 @@ const Layout = ({ children, title, home = false }: Props) => {
   return (
     <>
       <Head>
+        <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
         <title>{title ? `${title} - ScheduleIt` : "ScheduleIt"}</title>
       </Head>
       <AppBar position="static" color="inherit" elevation={0}>
@@ -44,62 +45,66 @@ const Layout = ({ children, title, home = false }: Props) => {
           <Typography className={classes.title} variant="h6" noWrap>
             ScheduleIt
           </Typography>
-          <div className={classes.grow} />
-          <div className={classes.sectionDesktop}>
-            <div className={classes.rightSection}>
-              {isLoggedIn ? (
-                <IconButton
-                  aria-label="show 17 new notifications"
-                  color="inherit"
-                  className={classes.iconPadding}
-                >
-                  <Badge badgeContent={17} color="primary">
-                    <NotificationsIcon />
-                  </Badge>
-                </IconButton>
-              ) : (
-                <>
-                  <Button
-                    variant="contained"
-                    className={classes.navButton}
-                    disableElevation
-                    onClick={() => handleOpenAuthModal("login")}
+          {mode !== "clean" && (
+            <>
+              <div className={classes.grow} />
+              <div className={classes.sectionDesktop}>
+                <div className={classes.rightSection}>
+                  {isLoggedIn ? (
+                    <IconButton
+                      aria-label="show 17 new notifications"
+                      color="inherit"
+                      className={classes.iconPadding}
+                    >
+                      <Badge badgeContent={17} color="primary">
+                        <NotificationsIcon />
+                      </Badge>
+                    </IconButton>
+                  ) : (
+                    <>
+                      <Button
+                        variant="contained"
+                        className={classes.navButton}
+                        disableElevation
+                        onClick={() => handleOpenAuthModal("login")}
+                      >
+                        Log In
+                      </Button>
+                      <Button
+                        variant="contained"
+                        className={classes.navButton}
+                        color="primary"
+                        disableElevation
+                        onClick={() => handleOpenAuthModal("register")}
+                      >
+                        Sign Up
+                      </Button>
+                      <AuthModal />
+                    </>
+                  )}
+                  <IconButton
+                    ref={anchorRef}
+                    edge="end"
+                    aria-controls={openMenu ? "menu-list-grow" : undefined}
+                    aria-haspopup="true"
+                    color="inherit"
+                    className={classes.iconPadding}
+                    onClick={handleToggle}
                   >
-                    Log In
-                  </Button>
-                  <Button
-                    variant="contained"
-                    className={classes.navButton}
-                    color="primary"
-                    disableElevation
-                    onClick={() => handleOpenAuthModal("register")}
+                    <PortraitIcon />
+                  </IconButton>
+                  <OwnMenu
+                    open={openMenu}
+                    setOpen={setOpenMenu}
+                    anchorRef={anchorRef}
+                    style={{ minWidth: 200 }}
                   >
-                    Sign Up
-                  </Button>
-                  <AuthModal />
-                </>
-              )}
-              <IconButton
-                ref={anchorRef}
-                edge="end"
-                aria-controls={openMenu ? "menu-list-grow" : undefined}
-                aria-haspopup="true"
-                color="inherit"
-                className={classes.iconPadding}
-                onClick={handleToggle}
-              >
-                <PortraitIcon />
-              </IconButton>
-              <OwnMenu
-                open={openMenu}
-                setOpen={setOpenMenu}
-                anchorRef={anchorRef}
-                style={{ minWidth: 200 }}
-              >
-                <HeaderMenuItems setOpen={setOpenMenu} />
-              </OwnMenu>
-            </div>
-          </div>
+                    <HeaderMenuItems setOpen={setOpenMenu} />
+                  </OwnMenu>
+                </div>
+              </div>
+            </>
+          )}
         </Toolbar>
       </AppBar>
       {children}
