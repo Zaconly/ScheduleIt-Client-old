@@ -1,9 +1,9 @@
-import { DialogActions, DialogContent, TextField } from "@material-ui/core"
+import { DialogActions, DialogContent } from "@material-ui/core"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 
 import { useForgotPasswordMutation } from "../../generated/graphql"
-import { LoadingButton, OwnAlert } from "../custom"
+import { LoadingButton, OwnAlert, OwnTextField } from "../custom"
 import { useStyles } from "./style"
 
 interface ForgotPasswordInputs {
@@ -43,24 +43,20 @@ const ForgotPasswordForm = () => {
         <OwnAlert open={success} severity="success">
           An Email containing a link to reset your password has been sent.
         </OwnAlert>
-        <OwnAlert open={errorMsg} severity="error" closeButton>
+        <OwnAlert open={errorMsg} severity="error" onClose={() => setErrorMsg(false)}>
           {error?.message}
         </OwnAlert>
 
-        <TextField
+        <OwnTextField
           autoFocus
-          id="email"
           name="email"
           label="E-Mail"
           type="email"
-          variant="outlined"
           error={!!errors.email && !!errors.email.message}
           helperText={
             (!!errors.email && errors.email.message) ||
             "We will send you an email containing a link to reset your password."
           }
-          fullWidth
-          margin="normal"
           inputRef={register({
             required: true,
             pattern: {

@@ -1,9 +1,9 @@
-import { DialogActions, DialogContent, TextField } from "@material-ui/core"
+import { DialogActions, DialogContent } from "@material-ui/core"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 
 import { MeDocument, useLoginMutation } from "../../generated/graphql"
-import { LoadingButton, OwnAlert, TextAction } from "../custom"
+import { LoadingButton, OwnAlert, OwnTextField, TextAction } from "../custom"
 import ForgotPasswordForm from "./ForgotPasswordForm"
 import { useStyles } from "./style"
 
@@ -58,29 +58,21 @@ const LoginForm = ({ handleClose }: Props) => {
       {!forgotPwdForm ? (
         <form noValidate onSubmit={handleSubmit(onSubmit)}>
           <DialogContent classes={{ root: classes.dialogContentRoot }}>
-            <OwnAlert open={open} severity="error" closeButton>
+            <OwnAlert open={open} severity="error" onClose={() => setOpen(false)}>
               {error?.message}
             </OwnAlert>
 
-            <TextField
+            <OwnTextField
               autoFocus
-              id="identifier"
               name="identifier"
               label="E-Mail or Username"
               type="text"
-              variant="outlined"
-              fullWidth
-              margin="normal"
               inputRef={register({ required: true })}
             />
-            <TextField
-              id="password"
+            <OwnTextField
               name="password"
               label="Password"
               type="password"
-              variant="outlined"
-              fullWidth
-              margin="normal"
               inputRef={register({ required: true })}
             />
             <TextAction color="primary" variant="caption" onClick={() => setForgotPwdForm(true)}>

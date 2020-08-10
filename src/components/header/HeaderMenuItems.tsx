@@ -15,9 +15,9 @@ import {
 import Link from "next/link"
 import { Dispatch, SetStateAction } from "react"
 
-import { darkThemeVar } from "../../../apollo"
-import { MeDocument, useHasDarkThemeQuery, useLogoutMutation } from "../../../generated/graphql"
-import { useIsLoggedIn } from "../../../utils/customHooks"
+import { darkThemeVar } from "../../apollo"
+import { useHasDarkThemeQuery } from "../../generated/graphql"
+import { useMeState } from "../../utils/hooks"
 import { useStyles } from "./style"
 
 interface Props {
@@ -28,16 +28,10 @@ const HeaderMenuItems = ({ setOpen }: Props) => {
   const classes = useStyles()
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)")
   const { data } = useHasDarkThemeQuery()
-  const isLoggedIn = useIsLoggedIn()
-  const [logout, { client }] = useLogoutMutation()
+  const { isLoggedIn, logout } = useMeState()
 
   const handleLogout = () => {
-    logout().then(() => {
-      client.writeQuery({
-        query: MeDocument,
-        data: { me: null }
-      })
-    })
+    logout()
     handleClose()
   }
 

@@ -33,7 +33,13 @@ const OwnMenu = ({ children, open, setOpen, anchorRef, ...props }: Props) => {
   }, [open])
 
   return (
-    <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition>
+    <Popper
+      open={open}
+      anchorEl={anchorRef.current}
+      role="menu"
+      transition
+      style={{ zIndex: 9999 }}
+    >
       {({ TransitionProps, placement }) => (
         <Grow
           {...TransitionProps}

@@ -1,9 +1,9 @@
-import { DialogActions, DialogContent, TextField } from "@material-ui/core"
+import { DialogActions, DialogContent } from "@material-ui/core"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 
 import { MeDocument, useRegisterMutation } from "../../generated/graphql"
-import { LoadingButton, OwnAlert } from "../custom"
+import { LoadingButton, OwnAlert, OwnTextField } from "../custom"
 import { useStyles } from "./style"
 
 interface RegisterInputs {
@@ -56,21 +56,17 @@ const RegisterForm = ({ handleClose }: Props) => {
   return (
     <form noValidate onSubmit={handleSubmit(onSubmit)}>
       <DialogContent classes={{ root: classes.dialogContentRoot }}>
-        <OwnAlert open={open} severity="error" closeButton>
+        <OwnAlert open={open} severity="error" onClose={() => setOpen(false)}>
           {error?.message}
         </OwnAlert>
 
-        <TextField
+        <OwnTextField
           autoFocus
-          id="username"
           name="username"
           label="Username"
           type="text"
-          variant="outlined"
           error={!!errors.username && !!errors.username.message}
           helperText={!!errors.username && errors.username.message}
-          fullWidth
-          margin="normal"
           inputRef={register({
             required: true,
             minLength: {
@@ -83,16 +79,12 @@ const RegisterForm = ({ handleClose }: Props) => {
             }
           })}
         />
-        <TextField
-          id="email"
+        <OwnTextField
           name="email"
           label="Email"
           type="email"
-          variant="outlined"
           error={!!errors.email && !!errors.email.message}
           helperText={!!errors.email && errors.email.message}
-          fullWidth
-          margin="normal"
           inputRef={register({
             required: true,
             pattern: {
@@ -101,16 +93,12 @@ const RegisterForm = ({ handleClose }: Props) => {
             }
           })}
         />
-        <TextField
-          id="password"
+        <OwnTextField
           name="password"
           label="Password"
           type="password"
-          variant="outlined"
           error={!!errors.password && !!errors.password.message}
           helperText={!!errors.password && errors.password.message}
-          fullWidth
-          margin="normal"
           inputRef={register({
             required: true,
             minLength: {
@@ -123,16 +111,12 @@ const RegisterForm = ({ handleClose }: Props) => {
             }
           })}
         />
-        <TextField
-          id="confirmPassword"
+        <OwnTextField
           name="confirmPassword"
           label="Confirm Password"
           type="password"
-          variant="outlined"
           error={!!errors.confirmPassword && !!errors.confirmPassword.message}
           helperText={!!errors.confirmPassword && errors.confirmPassword.message}
-          fullWidth
-          margin="normal"
           inputRef={register({
             required: true,
             validate: {

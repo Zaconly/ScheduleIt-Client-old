@@ -1,4 +1,11 @@
-import { Button, ButtonProps, CircularProgress, createStyles, makeStyles } from "@material-ui/core"
+import {
+  Button,
+  ButtonProps,
+  CircularProgress,
+  createStyles,
+  Fade,
+  makeStyles
+} from "@material-ui/core"
 
 interface Props extends ButtonProps {
   loading: boolean
@@ -28,7 +35,9 @@ const LoadingButton = ({ children, loading, ...props }: Props) => {
       <Button disabled={loading} {...props}>
         {!loading ? children : <>&nbsp;</>}
       </Button>
-      {loading && <CircularProgress size={24} className={classes.buttonProgress} color="inherit" />}
+      <Fade in={loading} style={{ transitionDelay: loading ? "500ms" : "0ms" }} unmountOnExit>
+        <CircularProgress size={24} className={classes.buttonProgress} color="inherit" />
+      </Fade>
     </div>
   )
 }

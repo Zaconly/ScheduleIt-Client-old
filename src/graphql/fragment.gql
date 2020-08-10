@@ -7,11 +7,13 @@ fragment UserInfo on User {
 fragment BoardInfo on Board {
   id
   name
+  isArchived
 }
 
 fragment TaskInfo on Task {
   id
   name
+  isCompleted
 }
 
 fragment TagInfo on Tag {

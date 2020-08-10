@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 import { createMuiTheme, CssBaseline, Theme, ThemeProvider, useMediaQuery } from "@material-ui/core"
-import { purple } from "@material-ui/core/colors"
+import { deepPurple } from "@material-ui/core/colors"
 import { AppProps } from "next/app"
 import { useEffect, useMemo } from "react"
 
@@ -13,7 +13,6 @@ const AppComponent = ({ Component, pageProps }: AppProps) => {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)")
   const { data } = useHasDarkThemeQuery()
 
-  // @ts-ignore
   const SubLayout = Component.Layout || DefaultLayout
 
   const mode =
@@ -40,17 +39,18 @@ const AppComponent = ({ Component, pageProps }: AppProps) => {
         palette: {
           type: mode,
           background: {
-            default: isLight ? "#FAFAFA" : "#0E0E10",
-            paper: isLight ? "#FFF" : "#18181B"
+            default: isLight ? "#FAFAFA" : "#121212",
+            paper: isLight ? "#FFF" : "#1E1E1E"
           },
           primary: {
-            main: purple[800],
+            main: isLight ? "#6200EE" : deepPurple[400],
             contrastText: "#FFF"
           },
           secondary: {
-            main: "#FC6675",
+            main: "#03DAC5",
             contrastText: "#000"
-          }
+          },
+          divider: isLight ? "rgba(0, 0, 0, .08)" : "rgba(255, 255, 255, .08)"
         },
         overrides: {
           MuiButton: {

@@ -13,8 +13,7 @@ interface OwnTabProps {
 export const OwnTabs = withStyles((theme: Theme) =>
   createStyles({
     flexContainer: {
-      borderBottom:
-        theme.palette.type === "light" ? "1px solid rgba(0,0,0,.1)" : "1px solid #303032"
+      borderBottom: `1px solid ${theme.palette.divider}`
     },
     indicator: {
       display: "flex",

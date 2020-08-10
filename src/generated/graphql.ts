@@ -16,7 +16,7 @@ export type Scalars = {
   Time: Date
   /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
   DateTime: Date
-  Void: any
+  Void: void
 }
 
 export type Query = {
@@ -206,7 +206,7 @@ export type User = {
   email: Scalars["String"]
   isActive: Scalars["Boolean"]
   role: Role
-  boards: Array<Maybe<Board>>
+  boards?: Maybe<Array<Board>>
   createdAt?: Maybe<Scalars["DateTime"]>
   updatedAt?: Maybe<Scalars["DateTime"]>
 }
@@ -287,112 +287,147 @@ export type ModalContext = {
   currentTab?: Maybe<Scalars["String"]>
 }
 
-export type UserInfoFragment = { __typename?: "User" } & Pick<User, "id" | "username" | "email">
+export type UserInfoFragment = { __typename?: "User"; id: string; username: string; email: string }
 
-export type BoardInfoFragment = { __typename?: "Board" } & Pick<Board, "id" | "name">
+export type BoardInfoFragment = {
+  __typename?: "Board"
+  id: string
+  name: string
+  isArchived: boolean
+}
 
-export type TaskInfoFragment = { __typename?: "Task" } & Pick<Task, "id" | "name">
+export type TaskInfoFragment = {
+  __typename?: "Task"
+  id: string
+  name: string
+  isCompleted: boolean
+}
 
-export type TagInfoFragment = { __typename?: "Tag" } & Pick<Tag, "id" | "name">
+export type TagInfoFragment = { __typename?: "Tag"; id: string; name: string }
 
 export type HasDarkThemeQueryVariables = Exact<{ [key: string]: never }>
 
-export type HasDarkThemeQuery = { __typename?: "Query" } & Pick<Query, "hasDarkTheme">
+export type HasDarkThemeQuery = { __typename?: "Query"; hasDarkTheme: boolean }
 
 export type ModalContextQueryVariables = Exact<{ [key: string]: never }>
 
-export type ModalContextQuery = { __typename?: "Query" } & {
-  modalContext?: Maybe<
-    { __typename?: "ModalContext" } & Pick<ModalContext, "id" | "isOpen" | "currentTab">
-  >
+export type ModalContextQuery = {
+  __typename?: "Query"
+  modalContext?: Maybe<{
+    __typename?: "ModalContext"
+    id: string
+    isOpen: boolean
+    currentTab?: Maybe<string>
+  }>
 }
 
 export type LoginMutationVariables = Exact<{
   input: LoginInput
 }>
 
-export type LoginMutation = { __typename?: "Mutation" } & {
-  login: { __typename?: "User" } & Pick<User, "role" | "createdAt" | "updatedAt"> & {
-      boards: Array<
-        Maybe<
-          { __typename?: "Board" } & {
-            tasks?: Maybe<
-              Array<
-                { __typename?: "Task" } & {
-                  tags?: Maybe<Array<{ __typename?: "Tag" } & TagInfoFragment>>
-                } & TaskInfoFragment
-              >
+export type LoginMutation = {
+  __typename?: "Mutation"
+  login: {
+    __typename?: "User"
+    role: Role
+    createdAt?: Maybe<Date>
+    updatedAt?: Maybe<Date>
+    boards?: Maybe<
+      Array<
+        {
+          __typename?: "Board"
+          tasks?: Maybe<
+            Array<
+              {
+                __typename?: "Task"
+                tags?: Maybe<Array<{ __typename?: "Tag" } & TagInfoFragment>>
+              } & TaskInfoFragment
             >
-          } & BoardInfoFragment
-        >
+          >
+        } & BoardInfoFragment
       >
-    } & UserInfoFragment
+    >
+  } & UserInfoFragment
 }
 
 export type RegisterMutationVariables = Exact<{
   input: RegisterInput
 }>
 
-export type RegisterMutation = { __typename?: "Mutation" } & {
-  register: { __typename?: "User" } & Pick<User, "role" | "createdAt" | "updatedAt"> & {
-      boards: Array<
-        Maybe<
-          { __typename?: "Board" } & {
-            tasks?: Maybe<
-              Array<
-                { __typename?: "Task" } & {
-                  tags?: Maybe<Array<{ __typename?: "Tag" } & TagInfoFragment>>
-                } & TaskInfoFragment
-              >
+export type RegisterMutation = {
+  __typename?: "Mutation"
+  register: {
+    __typename?: "User"
+    role: Role
+    createdAt?: Maybe<Date>
+    updatedAt?: Maybe<Date>
+    boards?: Maybe<
+      Array<
+        {
+          __typename?: "Board"
+          tasks?: Maybe<
+            Array<
+              {
+                __typename?: "Task"
+                tags?: Maybe<Array<{ __typename?: "Tag" } & TagInfoFragment>>
+              } & TaskInfoFragment
             >
-          } & BoardInfoFragment
-        >
+          >
+        } & BoardInfoFragment
       >
-    } & UserInfoFragment
+    >
+  } & UserInfoFragment
 }
 
 export type LogoutMutationVariables = Exact<{ [key: string]: never }>
 
-export type LogoutMutation = { __typename?: "Mutation" } & Pick<Mutation, "logout">
+export type LogoutMutation = { __typename?: "Mutation"; logout?: Maybe<void> }
 
 export type ForgotPasswordMutationVariables = Exact<{
   email: Scalars["String"]
 }>
 
-export type ForgotPasswordMutation = { __typename?: "Mutation" } & Pick<Mutation, "forgotPassword">
+export type ForgotPasswordMutation = { __typename?: "Mutation"; forgotPassword?: Maybe<void> }
 
 export type ResetPasswordMutationVariables = Exact<{
   token: Scalars["String"]
   newPassword: Scalars["String"]
 }>
 
-export type ResetPasswordMutation = { __typename?: "Mutation" } & Pick<Mutation, "resetPassword">
+export type ResetPasswordMutation = { __typename?: "Mutation"; resetPassword?: Maybe<void> }
 
 export type ChangePasswordMutationVariables = Exact<{
   oldPassword: Scalars["String"]
   newPassword: Scalars["String"]
 }>
 
-export type ChangePasswordMutation = { __typename?: "Mutation" } & Pick<Mutation, "changePassword">
+export type ChangePasswordMutation = { __typename?: "Mutation"; changePassword?: Maybe<void> }
 
 export type MeQueryVariables = Exact<{ [key: string]: never }>
 
-export type MeQuery = { __typename?: "Query" } & {
-  me: { __typename?: "User" } & Pick<User, "role" | "createdAt" | "updatedAt"> & {
-      boards: Array<
-        Maybe<
-          { __typename?: "Board" } & {
-            tasks?: Maybe<
-              Array<
-                { __typename?: "Task" } & {
-                  tags?: Maybe<Array<{ __typename?: "Tag" } & TagInfoFragment>>
-                } & TaskInfoFragment
-              >
+export type MeQuery = {
+  __typename?: "Query"
+  me: {
+    __typename?: "User"
+    role: Role
+    createdAt?: Maybe<Date>
+    updatedAt?: Maybe<Date>
+    boards?: Maybe<
+      Array<
+        {
+          __typename?: "Board"
+          tasks?: Maybe<
+            Array<
+              {
+                __typename?: "Task"
+                tags?: Maybe<Array<{ __typename?: "Tag" } & TagInfoFragment>>
+              } & TaskInfoFragment
             >
-          } & BoardInfoFragment
-        >
+          >
+        } & BoardInfoFragment
       >
-    } & UserInfoFragment
+    >
+  } & UserInfoFragment
 }
 
 export const UserInfoFragmentDoc = gql`
@@ -406,12 +441,14 @@ export const BoardInfoFragmentDoc = gql`
   fragment BoardInfo on Board {
     id
     name
+    isArchived
   }
 `
 export const TaskInfoFragmentDoc = gql`
   fragment TaskInfo on Task {
     id
     name
+    isCompleted
   }
 `
 export const TagInfoFragmentDoc = gql`

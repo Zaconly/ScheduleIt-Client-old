@@ -1,7 +1,7 @@
 import { GetServerSideProps } from "next"
 
 import { OwnHead as Head } from "../components/custom"
-import { MeDocument, useMeQuery } from "../generated/graphql"
+import { useMeQuery } from "../generated/graphql"
 import apolloQuerySsr from "../utils/apolloQuerySsr"
 
 const Index = () => {
@@ -16,7 +16,7 @@ const Index = () => {
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  return apolloQuerySsr(MeDocument, req)
+  return apolloQuerySsr(req)
 }
 
 export default Index

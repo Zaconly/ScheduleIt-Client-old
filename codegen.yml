@@ -11,6 +11,7 @@ generates:
       - "typescript-react-apollo"
     config:
       reactApolloVersion: 3
+      preResolveTypes: true
       withHooks: true
       withHOC: false
       withComponent: false
@@ -18,6 +19,7 @@ generates:
         DateTime: Date
         Date: Date
         Time: Date
+        Void: void
 hooks:
   afterAllFileWrite:
     - eslint --fix .

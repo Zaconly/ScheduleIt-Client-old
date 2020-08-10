@@ -1,35 +1,22 @@
 import { Collapse, IconButton } from "@material-ui/core"
 import CloseIcon from "@material-ui/icons/Close"
 import Alert, { AlertProps } from "@material-ui/lab/Alert"
-import { ReactNode, useEffect, useState } from "react"
+import { ReactNode } from "react"
 
-interface Props extends AlertProps {
+interface OwnAlertProps extends AlertProps {
   children: ReactNode
   open: boolean
-  closeButton?: boolean
+  onClose?: () => void
 }
 
-const OwnAlert = ({ children, open, closeButton = false, ...rest }: Props) => {
-  const [localOpen, setLocalOpen] = useState(false)
-
-  useEffect(() => {
-    setLocalOpen(open)
-  }, [open])
-
+const OwnAlert = ({ children, open, onClose, ...rest }: OwnAlertProps) => {
   return (
-    <Collapse in={localOpen}>
+    <Collapse in={open}>
       <Alert
         variant="filled"
         action={
-          closeButton && (
-            <IconButton
-              aria-label="close"
-              color="inherit"
-              size="small"
-              onClick={() => {
-                setLocalOpen(localOpen)
-              }}
-            >
+          onClose && (
+            <IconButton aria-label="close" color="inherit" size="small" onClick={onClose}>
               <CloseIcon fontSize="inherit" />
             </IconButton>
           )

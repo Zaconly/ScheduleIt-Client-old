@@ -1,9 +1,9 @@
-import { Box, TextField } from "@material-ui/core"
+import { Box } from "@material-ui/core"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 
 import { useResetPasswordMutation } from "../../generated/graphql"
-import { LoadingButton, OwnAlert } from "../custom"
+import { LoadingButton, OwnAlert, OwnTextField } from "../custom"
 
 interface ResetPasswordInputs {
   newPassword: string
@@ -49,16 +49,12 @@ const ResetPasswordForm = ({ token }: Props) => {
         {error?.message}
       </OwnAlert>
 
-      <TextField
-        id="newPassword"
+      <OwnTextField
         name="newPassword"
         label="Password"
         type="password"
-        variant="outlined"
         error={!!errors.newPassword}
         helperText={!!errors.newPassword && errors.newPassword.message}
-        fullWidth
-        margin="normal"
         inputRef={register({
           required: true,
           minLength: {
@@ -71,16 +67,12 @@ const ResetPasswordForm = ({ token }: Props) => {
           }
         })}
       />
-      <TextField
-        id="confirmNewPassword"
+      <OwnTextField
         name="confirmNewPassword"
         label="Confirm Password"
         type="password"
-        variant="outlined"
         error={!!errors.confirmNewPassword}
         helperText={!!errors.confirmNewPassword && errors.confirmNewPassword.message}
-        fullWidth
-        margin="normal"
         inputRef={register({
           required: true,
           validate: {

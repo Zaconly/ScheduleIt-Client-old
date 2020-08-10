@@ -1,9 +1,9 @@
-import { Box, TextField } from "@material-ui/core"
+import { Box } from "@material-ui/core"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 
 import { useChangePasswordMutation } from "../../generated/graphql"
-import { LoadingButton, OwnAlert } from "../custom"
+import { LoadingButton, OwnAlert, OwnTextField } from "../custom"
 
 interface ChangePasswordInputs {
   oldPassword: string
@@ -51,28 +51,20 @@ const ChangePasswordForm = () => {
         {error?.message}
       </OwnAlert>
 
-      <TextField
-        id="oldPassword"
+      <OwnTextField
         name="oldPassword"
         label="Current Password"
         type="password"
-        variant="outlined"
         error={!!errors.oldPassword && !!errors.oldPassword.message}
         helperText={!!errors.oldPassword && errors.oldPassword.message}
-        fullWidth
-        margin="normal"
         inputRef={register({ required: true })}
       />
-      <TextField
-        id="newPassword"
+      <OwnTextField
         name="newPassword"
         label="Password"
         type="password"
-        variant="outlined"
         error={!!errors.newPassword && !!errors.newPassword.message}
         helperText={!!errors.newPassword && errors.newPassword.message}
-        fullWidth
-        margin="normal"
         inputRef={register({
           required: true,
           minLength: {
@@ -85,16 +77,12 @@ const ChangePasswordForm = () => {
           }
         })}
       />
-      <TextField
-        id="confirmNewPassword"
+      <OwnTextField
         name="confirmNewPassword"
         label="Confirm Password"
         type="password"
-        variant="outlined"
         error={!!errors.confirmNewPassword && !!errors.confirmNewPassword.message}
         helperText={!!errors.confirmNewPassword && errors.confirmNewPassword.message}
-        fullWidth
-        margin="normal"
         inputRef={register({
           required: true,
           validate: {
