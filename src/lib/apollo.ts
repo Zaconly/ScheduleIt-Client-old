@@ -19,6 +19,12 @@ function createApolloClient(cookie = "") {
       typePolicies: {
         Query: {
           fields: {
+            board(_, { args, toReference }) {
+              return toReference({
+                __typename: "Board",
+                id: args?.id
+              })
+            },
             hasDarkTheme: {
               read() {
                 return darkThemeVar()

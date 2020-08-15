@@ -1,0 +1,33 @@
+# import "../fragment.gql"
+
+query Board($id: ID!) {
+  board(id: $id) {
+    ...BoardCascadeInfo
+  }
+}
+
+query Boards {
+  boards {
+    ...BoardCascadeInfo
+  }
+}
+
+query BoardsUser($id: ID!) {
+  boardsUser(userId: $id) {
+    ...BoardCascadeInfo
+  }
+}
+
+query BoardsMe {
+  boardsMe {
+    ...BoardCascadeInfo
+  }
+}
+
+query BoardsOnlyMe {
+  me {
+    boards {
+      ...BoardInfo
+    }
+  }
+}

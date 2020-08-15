@@ -15,7 +15,7 @@ const SettingsLayout = ({ children, router }: Props) => {
   const classes = useStyles()
   const value = router.pathname === "/settings" ? "/settings/profile" : router.pathname
 
-  const handleChange = (event: React.ChangeEvent<unknown>, newValue: TabType) => {
+  const handleChange = (_: React.ChangeEvent<unknown>, newValue: TabType) => {
     router.push(newValue)
   }
 

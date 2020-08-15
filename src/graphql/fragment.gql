@@ -8,15 +8,57 @@ fragment BoardInfo on Board {
   id
   name
   isArchived
+  order
+}
+
+fragment ListInfo on List {
+  id
+  name
+  order
+}
+
+fragment CardInfo on Card {
+  id
+  name
+  dueDate
+  desc
+  order
+}
+
+fragment CheckListInfo on CheckList {
+  id
+  name
+  order
 }
 
 fragment TaskInfo on Task {
   id
   name
   isCompleted
+  order
 }
 
 fragment TagInfo on Tag {
   id
   name
+  color
+}
+
+fragment BoardCascadeInfo on Board {
+  ...BoardInfo
+  lists {
+    ...ListInfo
+    cards {
+      ...CardInfo
+      checkLists {
+        ...CheckListInfo
+        tasks {
+          ...TaskInfo
+        }
+      }
+    }
+  }
+  tasks {
+    ...TaskInfo
+  }
 }

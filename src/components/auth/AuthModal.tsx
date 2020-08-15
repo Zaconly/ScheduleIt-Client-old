@@ -1,43 +1,27 @@
 import { Dialog, DialogTitle } from "@material-ui/core"
 import { ChangeEvent } from "react"
 
-import { modalContextVar } from "../../apollo"
-import { useModalContextQuery } from "../../generated/graphql"
+import { useModal } from "../../utils/hooks"
 import { OwnTab, OwnTabs } from "../custom"
 import { LoginForm, RegisterForm } from "../form"
 import { useStyles } from "./style"
 
 const AuthModal = () => {
   const classes = useStyles()
-  const { data } = useModalContextQuery()
-  const modalState = data?.modalContext?.id === "AuthModal" ? data?.modalContext : null
-  const isLogin = modalState?.currentTab !== "register"
+  const { onClose, setOptions, currentTab, id, isOpen } = useModal({ id: "AuthModal" })
+  const isRegisterModal = id === "AuthModal" && currentTab === "register"
 
   const handleClose = () => {
-    modalContextVar(
-      modalState
-        ? {
-            ...modalState,
-            isOpen: false
-          }
-        : null
-    )
+    onClose()
   }
 
   const handleChange = (_event: ChangeEvent<unknown>, newValue: string) => {
-    modalContextVar(
-      modalState
-        ? {
-            ...modalState,
-            currentTab: newValue
-          }
-        : null
-    )
+    setOptions({ currentTab: newValue })
   }
 
   return (
     <Dialog
-      open={modalState ? modalState.isOpen : false}
+      open={isOpen || false}
       onClose={handleClose}
       aria-labelledby="form-dialog-title"
       fullWidth
@@ -45,13 +29,13 @@ const AuthModal = () => {
     >
       <div className={classes.wrapper}>
         <DialogTitle id="form-dialog-title" className={classes.title}>
-          {isLogin ? "Log in to ScheduleIt" : "Join ScheduleIt today"}
+          {!isRegisterModal ? "Log in to ScheduleIt" : "Join ScheduleIt today"}
         </DialogTitle>
-        <OwnTabs value={modalState?.currentTab || "login"} onChange={handleChange}>
+        <OwnTabs value={currentTab || "login"} onChange={handleChange}>
           <OwnTab label="Log In" value="login" />
           <OwnTab label="Sign Up" value="register" />
         </OwnTabs>
-        {isLogin ? (
+        {!isRegisterModal ? (
           <LoginForm handleClose={handleClose} />
         ) : (
           <RegisterForm handleClose={handleClose} />

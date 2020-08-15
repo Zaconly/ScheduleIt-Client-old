@@ -22,34 +22,71 @@ export type Scalars = {
 export type Query = {
   __typename?: "Query"
   _?: Maybe<Scalars["Boolean"]>
-  allBoards?: Maybe<Array<Board>>
-  allTemplates?: Maybe<Array<Template>>
-  allUsers?: Maybe<Array<User>>
-  authorTemplates?: Maybe<Array<Template>>
   board?: Maybe<Board>
-  boardTasks?: Maybe<Array<Task>>
+  boards?: Maybe<Array<Board>>
+  boardsMe?: Maybe<Array<Board>>
+  boardsUser?: Maybe<Array<Board>>
+  card?: Maybe<Card>
+  cards?: Maybe<Array<Card>>
+  cardsList?: Maybe<Array<Card>>
+  cardsTag?: Maybe<Array<Card>>
+  checkList?: Maybe<CheckList>
+  checkLists?: Maybe<Array<CheckList>>
+  checkListsCard?: Maybe<Array<CheckList>>
   hasDarkTheme: Scalars["Boolean"]
+  list?: Maybe<List>
+  lists?: Maybe<Array<List>>
+  listsBoard?: Maybe<Array<List>>
   me: User
   modalContext?: Maybe<ModalContext>
   tag?: Maybe<Tag>
-  tagTasks?: Maybe<Array<Task>>
+  tags?: Maybe<Array<Tag>>
+  tagsBoard?: Maybe<Array<Tag>>
+  tagsCard?: Maybe<Array<Tag>>
   task?: Maybe<Task>
-  taskTags?: Maybe<Array<Tag>>
+  tasks?: Maybe<Array<Task>>
+  tasksBoard?: Maybe<Array<Task>>
+  tasksCheckList?: Maybe<Array<Task>>
   template?: Maybe<Template>
+  templates?: Maybe<Array<Template>>
+  templatesAuthor?: Maybe<Array<Template>>
   user?: Maybe<User>
-  userBoards?: Maybe<Array<Board>>
-  userTasks?: Maybe<Array<Task>>
-}
-
-export type QueryAuthorTemplatesArgs = {
-  authorId: Scalars["ID"]
+  users?: Maybe<Array<User>>
 }
 
 export type QueryBoardArgs = {
   id: Scalars["ID"]
 }
 
-export type QueryBoardTasksArgs = {
+export type QueryBoardsUserArgs = {
+  userId?: Maybe<Scalars["ID"]>
+}
+
+export type QueryCardArgs = {
+  id: Scalars["ID"]
+}
+
+export type QueryCardsListArgs = {
+  listId: Scalars["ID"]
+}
+
+export type QueryCardsTagArgs = {
+  tagId: Scalars["ID"]
+}
+
+export type QueryCheckListArgs = {
+  id: Scalars["ID"]
+}
+
+export type QueryCheckListsCardArgs = {
+  cardId: Scalars["ID"]
+}
+
+export type QueryListArgs = {
+  id: Scalars["ID"]
+}
+
+export type QueryListsBoardArgs = {
   boardId: Scalars["ID"]
 }
 
@@ -57,28 +94,28 @@ export type QueryTagArgs = {
   id: Scalars["ID"]
 }
 
-export type QueryTagTasksArgs = {
-  id: Scalars["ID"]
+export type QueryTagsBoardArgs = {
+  boardId: Scalars["ID"]
+}
+
+export type QueryTagsCardArgs = {
+  cardId: Scalars["ID"]
 }
 
 export type QueryTaskArgs = {
   id: Scalars["ID"]
 }
 
-export type QueryTaskTagsArgs = {
-  taskId: Scalars["ID"]
-}
-
 export type QueryTemplateArgs = {
   id: Scalars["ID"]
 }
 
-export type QueryUserArgs = {
-  id: Scalars["ID"]
+export type QueryTemplatesAuthorArgs = {
+  authorId: Scalars["ID"]
 }
 
-export type QueryUserBoardsArgs = {
-  userId?: Maybe<Scalars["ID"]>
+export type QueryUserArgs = {
+  id: Scalars["ID"]
 }
 
 export type Mutation = {
@@ -86,7 +123,7 @@ export type Mutation = {
   _?: Maybe<Scalars["Boolean"]>
   addUser?: Maybe<User>
   updateUser?: Maybe<User>
-  deleteUser?: Maybe<Scalars["Boolean"]>
+  deleteUser?: Maybe<Scalars["Void"]>
   login: User
   register: User
   logout?: Maybe<Scalars["Void"]>
@@ -95,13 +132,28 @@ export type Mutation = {
   changePassword?: Maybe<Scalars["Void"]>
   addTemplate?: Maybe<Template>
   updateTemplate?: Maybe<Template>
-  deleteTemplate?: Maybe<Scalars["Boolean"]>
+  deleteTemplate?: Maybe<Scalars["Void"]>
   addBoard?: Maybe<Board>
   updateBoard?: Maybe<Board>
-  deleteBoard?: Maybe<Scalars["Boolean"]>
-  addTask?: Maybe<Task>
+  deleteBoard?: Maybe<Scalars["Void"]>
+  addList?: Maybe<List>
+  updateList?: Maybe<List>
+  deleteList?: Maybe<Scalars["Void"]>
+  addCard?: Maybe<Card>
+  attachTag?: Maybe<Card>
+  detachTag?: Maybe<Card>
+  updateCard?: Maybe<Card>
+  deleteCard?: Maybe<Scalars["Void"]>
+  addCheckList?: Maybe<CheckList>
+  updateCheckList?: Maybe<CheckList>
+  deleteCheckList?: Maybe<Scalars["Void"]>
+  addTaskBoard?: Maybe<Task>
+  addTaskCheckList?: Maybe<Task>
   updateTask?: Maybe<Task>
-  deleteTask?: Maybe<Scalars["Boolean"]>
+  deleteTask?: Maybe<Scalars["Void"]>
+  addTag?: Maybe<Tag>
+  updateTag?: Maybe<Tag>
+  deleteTag?: Maybe<Scalars["Void"]>
 }
 
 export type MutationAddUserArgs = {
@@ -165,8 +217,65 @@ export type MutationDeleteBoardArgs = {
   id: Scalars["ID"]
 }
 
-export type MutationAddTaskArgs = {
+export type MutationAddListArgs = {
   boardId: Scalars["ID"]
+  input: ListInput
+}
+
+export type MutationUpdateListArgs = {
+  id: Scalars["ID"]
+  input: ListInput
+}
+
+export type MutationDeleteListArgs = {
+  id: Scalars["ID"]
+}
+
+export type MutationAddCardArgs = {
+  listId: Scalars["ID"]
+  input: CardInput
+}
+
+export type MutationAttachTagArgs = {
+  cardId: Scalars["ID"]
+  tagId: Scalars["ID"]
+}
+
+export type MutationDetachTagArgs = {
+  cardId: Scalars["ID"]
+  tagId: Scalars["ID"]
+}
+
+export type MutationUpdateCardArgs = {
+  id: Scalars["ID"]
+  input: CardInput
+}
+
+export type MutationDeleteCardArgs = {
+  id: Scalars["ID"]
+}
+
+export type MutationAddCheckListArgs = {
+  cardId: Scalars["ID"]
+  input: CheckListInput
+}
+
+export type MutationUpdateCheckListArgs = {
+  id: Scalars["ID"]
+  input: CheckListInput
+}
+
+export type MutationDeleteCheckListArgs = {
+  id: Scalars["ID"]
+}
+
+export type MutationAddTaskBoardArgs = {
+  boardId: Scalars["ID"]
+  input: TaskInput
+}
+
+export type MutationAddTaskCheckListArgs = {
+  checkListId: Scalars["ID"]
   input: TaskInput
 }
 
@@ -176,6 +285,20 @@ export type MutationUpdateTaskArgs = {
 }
 
 export type MutationDeleteTaskArgs = {
+  id: Scalars["ID"]
+}
+
+export type MutationAddTagArgs = {
+  boardId: Scalars["ID"]
+  input: TagInput
+}
+
+export type MutationUpdateTagArgs = {
+  id: Scalars["ID"]
+  input: TagInput
+}
+
+export type MutationDeleteTagArgs = {
   id: Scalars["ID"]
 }
 
@@ -230,15 +353,18 @@ export type Template = {
   __typename?: "Template"
   id: Scalars["ID"]
   name: Scalars["String"]
+  desc?: Maybe<Scalars["String"]>
+  type: Scalars["String"]
   author?: Maybe<User>
   createdAt?: Maybe<Scalars["DateTime"]>
   updatedAt?: Maybe<Scalars["DateTime"]>
 }
 
 export type BoardInput = {
-  name: Scalars["String"]
-  icon: Scalars["String"]
-  isArchived: Scalars["Boolean"]
+  name?: Maybe<Scalars["String"]>
+  icon?: Maybe<Scalars["String"]>
+  isArchived?: Maybe<Scalars["Boolean"]>
+  order?: Maybe<Scalars["Int"]>
 }
 
 export type Board = {
@@ -247,8 +373,60 @@ export type Board = {
   name: Scalars["String"]
   template?: Maybe<Template>
   tasks?: Maybe<Array<Task>>
+  lists?: Maybe<Array<List>>
   icon?: Maybe<Scalars["String"]>
   isArchived: Scalars["Boolean"]
+  order: Scalars["Int"]
+  createdAt?: Maybe<Scalars["DateTime"]>
+  updatedAt?: Maybe<Scalars["DateTime"]>
+}
+
+export type ListInput = {
+  name?: Maybe<Scalars["String"]>
+  order?: Maybe<Scalars["Int"]>
+}
+
+export type List = {
+  __typename?: "List"
+  id: Scalars["ID"]
+  name: Scalars["String"]
+  order: Scalars["Int"]
+  cards?: Maybe<Array<Card>>
+  createdAt?: Maybe<Scalars["DateTime"]>
+  updatedAt?: Maybe<Scalars["DateTime"]>
+}
+
+export type CardInput = {
+  name?: Maybe<Scalars["String"]>
+  dueDate?: Maybe<Scalars["DateTime"]>
+  desc?: Maybe<Scalars["String"]>
+  order?: Maybe<Scalars["Int"]>
+}
+
+export type Card = {
+  __typename?: "Card"
+  id: Scalars["ID"]
+  name: Scalars["String"]
+  dueDate?: Maybe<Scalars["DateTime"]>
+  desc?: Maybe<Scalars["String"]>
+  order: Scalars["Int"]
+  checkLists?: Maybe<Array<CheckList>>
+  tags?: Maybe<Array<Tag>>
+  createdAt?: Maybe<Scalars["DateTime"]>
+  updatedAt?: Maybe<Scalars["DateTime"]>
+}
+
+export type CheckListInput = {
+  name?: Maybe<Scalars["String"]>
+  order?: Maybe<Scalars["Int"]>
+}
+
+export type CheckList = {
+  __typename?: "CheckList"
+  id: Scalars["ID"]
+  name: Scalars["String"]
+  order: Scalars["Int"]
+  tasks?: Maybe<Array<Task>>
   createdAt?: Maybe<Scalars["DateTime"]>
   updatedAt?: Maybe<Scalars["DateTime"]>
 }
@@ -258,6 +436,7 @@ export type TaskInput = {
   isCompleted: Scalars["Boolean"]
   startDate?: Maybe<Scalars["DateTime"]>
   endDate?: Maybe<Scalars["DateTime"]>
+  order?: Maybe<Scalars["Int"]>
 }
 
 export type Task = {
@@ -267,10 +446,14 @@ export type Task = {
   isCompleted: Scalars["Boolean"]
   startDate?: Maybe<Scalars["DateTime"]>
   endDate?: Maybe<Scalars["DateTime"]>
-  board?: Maybe<Board>
-  tags?: Maybe<Array<Tag>>
+  order: Scalars["Int"]
   createdAt?: Maybe<Scalars["DateTime"]>
   updatedAt?: Maybe<Scalars["DateTime"]>
+}
+
+export type TagInput = {
+  name?: Maybe<Scalars["String"]>
+  color?: Maybe<Scalars["String"]>
 }
 
 export type Tag = {
@@ -278,6 +461,8 @@ export type Tag = {
   id: Scalars["ID"]
   name: Scalars["String"]
   color?: Maybe<Scalars["String"]>
+  createdAt?: Maybe<Scalars["DateTime"]>
+  updatedAt?: Maybe<Scalars["DateTime"]>
 }
 
 export type ModalContext = {
@@ -285,6 +470,71 @@ export type ModalContext = {
   id: Scalars["String"]
   isOpen: Scalars["Boolean"]
   currentTab?: Maybe<Scalars["String"]>
+  path?: Maybe<Scalars["String"]>
+}
+
+export type AddBoardMutationVariables = Exact<{
+  input: BoardInput
+}>
+
+export type AddBoardMutation = {
+  __typename?: "Mutation"
+  addBoard?: Maybe<{ __typename?: "Board" } & BoardCascadeInfoFragment>
+}
+
+export type UpdateBoardMutationVariables = Exact<{
+  id: Scalars["ID"]
+  input: BoardInput
+}>
+
+export type UpdateBoardMutation = {
+  __typename?: "Mutation"
+  updateBoard?: Maybe<{ __typename?: "Board" } & BoardCascadeInfoFragment>
+}
+
+export type DeleteBoardMutationVariables = Exact<{
+  id: Scalars["ID"]
+}>
+
+export type DeleteBoardMutation = { __typename?: "Mutation"; deleteBoard?: Maybe<void> }
+
+export type BoardQueryVariables = Exact<{
+  id: Scalars["ID"]
+}>
+
+export type BoardQuery = {
+  __typename?: "Query"
+  board?: Maybe<{ __typename?: "Board" } & BoardCascadeInfoFragment>
+}
+
+export type BoardsQueryVariables = Exact<{ [key: string]: never }>
+
+export type BoardsQuery = {
+  __typename?: "Query"
+  boards?: Maybe<Array<{ __typename?: "Board" } & BoardCascadeInfoFragment>>
+}
+
+export type BoardsUserQueryVariables = Exact<{
+  id: Scalars["ID"]
+}>
+
+export type BoardsUserQuery = {
+  __typename?: "Query"
+  boardsUser?: Maybe<Array<{ __typename?: "Board" } & BoardCascadeInfoFragment>>
+}
+
+export type BoardsMeQueryVariables = Exact<{ [key: string]: never }>
+
+export type BoardsMeQuery = {
+  __typename?: "Query"
+  boardsMe?: Maybe<Array<{ __typename?: "Board" } & BoardCascadeInfoFragment>>
+}
+
+export type BoardsOnlyMeQueryVariables = Exact<{ [key: string]: never }>
+
+export type BoardsOnlyMeQuery = {
+  __typename?: "Query"
+  me: { __typename?: "User"; boards?: Maybe<Array<{ __typename?: "Board" } & BoardInfoFragment>> }
 }
 
 export type UserInfoFragment = { __typename?: "User"; id: string; username: string; email: string }
@@ -294,6 +544,25 @@ export type BoardInfoFragment = {
   id: string
   name: string
   isArchived: boolean
+  order: number
+}
+
+export type ListInfoFragment = { __typename?: "List"; id: string; name: string; order: number }
+
+export type CardInfoFragment = {
+  __typename?: "Card"
+  id: string
+  name: string
+  dueDate?: Maybe<Date>
+  desc?: Maybe<string>
+  order: number
+}
+
+export type CheckListInfoFragment = {
+  __typename?: "CheckList"
+  id: string
+  name: string
+  order: number
 }
 
 export type TaskInfoFragment = {
@@ -301,9 +570,42 @@ export type TaskInfoFragment = {
   id: string
   name: string
   isCompleted: boolean
+  order: number
 }
 
-export type TagInfoFragment = { __typename?: "Tag"; id: string; name: string }
+export type TagInfoFragment = {
+  __typename?: "Tag"
+  id: string
+  name: string
+  color?: Maybe<string>
+}
+
+export type BoardCascadeInfoFragment = {
+  __typename?: "Board"
+  lists?: Maybe<
+    Array<
+      {
+        __typename?: "List"
+        cards?: Maybe<
+          Array<
+            {
+              __typename?: "Card"
+              checkLists?: Maybe<
+                Array<
+                  {
+                    __typename?: "CheckList"
+                    tasks?: Maybe<Array<{ __typename?: "Task" } & TaskInfoFragment>>
+                  } & CheckListInfoFragment
+                >
+              >
+            } & CardInfoFragment
+          >
+        >
+      } & ListInfoFragment
+    >
+  >
+  tasks?: Maybe<Array<{ __typename?: "Task" } & TaskInfoFragment>>
+} & BoardInfoFragment
 
 export type HasDarkThemeQueryVariables = Exact<{ [key: string]: never }>
 
@@ -318,6 +620,7 @@ export type ModalContextQuery = {
     id: string
     isOpen: boolean
     currentTab?: Maybe<string>
+    path?: Maybe<string>
   }>
 }
 
@@ -332,21 +635,7 @@ export type LoginMutation = {
     role: Role
     createdAt?: Maybe<Date>
     updatedAt?: Maybe<Date>
-    boards?: Maybe<
-      Array<
-        {
-          __typename?: "Board"
-          tasks?: Maybe<
-            Array<
-              {
-                __typename?: "Task"
-                tags?: Maybe<Array<{ __typename?: "Tag" } & TagInfoFragment>>
-              } & TaskInfoFragment
-            >
-          >
-        } & BoardInfoFragment
-      >
-    >
+    boards?: Maybe<Array<{ __typename?: "Board" } & BoardCascadeInfoFragment>>
   } & UserInfoFragment
 }
 
@@ -361,21 +650,7 @@ export type RegisterMutation = {
     role: Role
     createdAt?: Maybe<Date>
     updatedAt?: Maybe<Date>
-    boards?: Maybe<
-      Array<
-        {
-          __typename?: "Board"
-          tasks?: Maybe<
-            Array<
-              {
-                __typename?: "Task"
-                tags?: Maybe<Array<{ __typename?: "Tag" } & TagInfoFragment>>
-              } & TaskInfoFragment
-            >
-          >
-        } & BoardInfoFragment
-      >
-    >
+    boards?: Maybe<Array<{ __typename?: "Board" } & BoardCascadeInfoFragment>>
   } & UserInfoFragment
 }
 
@@ -412,21 +687,7 @@ export type MeQuery = {
     role: Role
     createdAt?: Maybe<Date>
     updatedAt?: Maybe<Date>
-    boards?: Maybe<
-      Array<
-        {
-          __typename?: "Board"
-          tasks?: Maybe<
-            Array<
-              {
-                __typename?: "Task"
-                tags?: Maybe<Array<{ __typename?: "Tag" } & TagInfoFragment>>
-              } & TaskInfoFragment
-            >
-          >
-        } & BoardInfoFragment
-      >
-    >
+    boards?: Maybe<Array<{ __typename?: "Board" } & BoardCascadeInfoFragment>>
   } & UserInfoFragment
 }
 
@@ -437,11 +698,42 @@ export const UserInfoFragmentDoc = gql`
     email
   }
 `
+export const TagInfoFragmentDoc = gql`
+  fragment TagInfo on Tag {
+    id
+    name
+    color
+  }
+`
 export const BoardInfoFragmentDoc = gql`
   fragment BoardInfo on Board {
     id
     name
     isArchived
+    order
+  }
+`
+export const ListInfoFragmentDoc = gql`
+  fragment ListInfo on List {
+    id
+    name
+    order
+  }
+`
+export const CardInfoFragmentDoc = gql`
+  fragment CardInfo on Card {
+    id
+    name
+    dueDate
+    desc
+    order
+  }
+`
+export const CheckListInfoFragmentDoc = gql`
+  fragment CheckListInfo on CheckList {
+    id
+    name
+    order
   }
 `
 export const TaskInfoFragmentDoc = gql`
@@ -449,14 +741,389 @@ export const TaskInfoFragmentDoc = gql`
     id
     name
     isCompleted
+    order
   }
 `
-export const TagInfoFragmentDoc = gql`
-  fragment TagInfo on Tag {
-    id
-    name
+export const BoardCascadeInfoFragmentDoc = gql`
+  fragment BoardCascadeInfo on Board {
+    ...BoardInfo
+    lists {
+      ...ListInfo
+      cards {
+        ...CardInfo
+        checkLists {
+          ...CheckListInfo
+          tasks {
+            ...TaskInfo
+          }
+        }
+      }
+    }
+    tasks {
+      ...TaskInfo
+    }
+  }
+  ${BoardInfoFragmentDoc}
+  ${ListInfoFragmentDoc}
+  ${CardInfoFragmentDoc}
+  ${CheckListInfoFragmentDoc}
+  ${TaskInfoFragmentDoc}
+`
+export const AddBoardDocument = gql`
+  mutation AddBoard($input: BoardInput!) {
+    addBoard(input: $input) {
+      ...BoardCascadeInfo
+    }
+  }
+  ${BoardCascadeInfoFragmentDoc}
+`
+export type AddBoardMutationFn = ApolloReactCommon.MutationFunction<
+  AddBoardMutation,
+  AddBoardMutationVariables
+>
+
+/**
+ * __useAddBoardMutation__
+ *
+ * To run a mutation, you first call `useAddBoardMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddBoardMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addBoardMutation, { data, loading, error }] = useAddBoardMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAddBoardMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<AddBoardMutation, AddBoardMutationVariables>
+) {
+  return ApolloReactHooks.useMutation<AddBoardMutation, AddBoardMutationVariables>(
+    AddBoardDocument,
+    baseOptions
+  )
+}
+export type AddBoardMutationHookResult = ReturnType<typeof useAddBoardMutation>
+export type AddBoardMutationResult = ApolloReactCommon.MutationResult<AddBoardMutation>
+export type AddBoardMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  AddBoardMutation,
+  AddBoardMutationVariables
+>
+export const UpdateBoardDocument = gql`
+  mutation UpdateBoard($id: ID!, $input: BoardInput!) {
+    updateBoard(id: $id, input: $input) {
+      ...BoardCascadeInfo
+    }
+  }
+  ${BoardCascadeInfoFragmentDoc}
+`
+export type UpdateBoardMutationFn = ApolloReactCommon.MutationFunction<
+  UpdateBoardMutation,
+  UpdateBoardMutationVariables
+>
+
+/**
+ * __useUpdateBoardMutation__
+ *
+ * To run a mutation, you first call `useUpdateBoardMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateBoardMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateBoardMutation, { data, loading, error }] = useUpdateBoardMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateBoardMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    UpdateBoardMutation,
+    UpdateBoardMutationVariables
+  >
+) {
+  return ApolloReactHooks.useMutation<UpdateBoardMutation, UpdateBoardMutationVariables>(
+    UpdateBoardDocument,
+    baseOptions
+  )
+}
+export type UpdateBoardMutationHookResult = ReturnType<typeof useUpdateBoardMutation>
+export type UpdateBoardMutationResult = ApolloReactCommon.MutationResult<UpdateBoardMutation>
+export type UpdateBoardMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  UpdateBoardMutation,
+  UpdateBoardMutationVariables
+>
+export const DeleteBoardDocument = gql`
+  mutation DeleteBoard($id: ID!) {
+    deleteBoard(id: $id)
   }
 `
+export type DeleteBoardMutationFn = ApolloReactCommon.MutationFunction<
+  DeleteBoardMutation,
+  DeleteBoardMutationVariables
+>
+
+/**
+ * __useDeleteBoardMutation__
+ *
+ * To run a mutation, you first call `useDeleteBoardMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteBoardMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteBoardMutation, { data, loading, error }] = useDeleteBoardMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteBoardMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    DeleteBoardMutation,
+    DeleteBoardMutationVariables
+  >
+) {
+  return ApolloReactHooks.useMutation<DeleteBoardMutation, DeleteBoardMutationVariables>(
+    DeleteBoardDocument,
+    baseOptions
+  )
+}
+export type DeleteBoardMutationHookResult = ReturnType<typeof useDeleteBoardMutation>
+export type DeleteBoardMutationResult = ApolloReactCommon.MutationResult<DeleteBoardMutation>
+export type DeleteBoardMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  DeleteBoardMutation,
+  DeleteBoardMutationVariables
+>
+export const BoardDocument = gql`
+  query Board($id: ID!) {
+    board(id: $id) {
+      ...BoardCascadeInfo
+    }
+  }
+  ${BoardCascadeInfoFragmentDoc}
+`
+
+/**
+ * __useBoardQuery__
+ *
+ * To run a query within a React component, call `useBoardQuery` and pass it any options that fit your needs.
+ * When your component renders, `useBoardQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useBoardQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useBoardQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<BoardQuery, BoardQueryVariables>
+) {
+  return ApolloReactHooks.useQuery<BoardQuery, BoardQueryVariables>(BoardDocument, baseOptions)
+}
+export function useBoardLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<BoardQuery, BoardQueryVariables>
+) {
+  return ApolloReactHooks.useLazyQuery<BoardQuery, BoardQueryVariables>(BoardDocument, baseOptions)
+}
+export type BoardQueryHookResult = ReturnType<typeof useBoardQuery>
+export type BoardLazyQueryHookResult = ReturnType<typeof useBoardLazyQuery>
+export type BoardQueryResult = ApolloReactCommon.QueryResult<BoardQuery, BoardQueryVariables>
+export const BoardsDocument = gql`
+  query Boards {
+    boards {
+      ...BoardCascadeInfo
+    }
+  }
+  ${BoardCascadeInfoFragmentDoc}
+`
+
+/**
+ * __useBoardsQuery__
+ *
+ * To run a query within a React component, call `useBoardsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useBoardsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useBoardsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useBoardsQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<BoardsQuery, BoardsQueryVariables>
+) {
+  return ApolloReactHooks.useQuery<BoardsQuery, BoardsQueryVariables>(BoardsDocument, baseOptions)
+}
+export function useBoardsLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<BoardsQuery, BoardsQueryVariables>
+) {
+  return ApolloReactHooks.useLazyQuery<BoardsQuery, BoardsQueryVariables>(
+    BoardsDocument,
+    baseOptions
+  )
+}
+export type BoardsQueryHookResult = ReturnType<typeof useBoardsQuery>
+export type BoardsLazyQueryHookResult = ReturnType<typeof useBoardsLazyQuery>
+export type BoardsQueryResult = ApolloReactCommon.QueryResult<BoardsQuery, BoardsQueryVariables>
+export const BoardsUserDocument = gql`
+  query BoardsUser($id: ID!) {
+    boardsUser(userId: $id) {
+      ...BoardCascadeInfo
+    }
+  }
+  ${BoardCascadeInfoFragmentDoc}
+`
+
+/**
+ * __useBoardsUserQuery__
+ *
+ * To run a query within a React component, call `useBoardsUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useBoardsUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useBoardsUserQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useBoardsUserQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<BoardsUserQuery, BoardsUserQueryVariables>
+) {
+  return ApolloReactHooks.useQuery<BoardsUserQuery, BoardsUserQueryVariables>(
+    BoardsUserDocument,
+    baseOptions
+  )
+}
+export function useBoardsUserLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<BoardsUserQuery, BoardsUserQueryVariables>
+) {
+  return ApolloReactHooks.useLazyQuery<BoardsUserQuery, BoardsUserQueryVariables>(
+    BoardsUserDocument,
+    baseOptions
+  )
+}
+export type BoardsUserQueryHookResult = ReturnType<typeof useBoardsUserQuery>
+export type BoardsUserLazyQueryHookResult = ReturnType<typeof useBoardsUserLazyQuery>
+export type BoardsUserQueryResult = ApolloReactCommon.QueryResult<
+  BoardsUserQuery,
+  BoardsUserQueryVariables
+>
+export const BoardsMeDocument = gql`
+  query BoardsMe {
+    boardsMe {
+      ...BoardCascadeInfo
+    }
+  }
+  ${BoardCascadeInfoFragmentDoc}
+`
+
+/**
+ * __useBoardsMeQuery__
+ *
+ * To run a query within a React component, call `useBoardsMeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useBoardsMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useBoardsMeQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useBoardsMeQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<BoardsMeQuery, BoardsMeQueryVariables>
+) {
+  return ApolloReactHooks.useQuery<BoardsMeQuery, BoardsMeQueryVariables>(
+    BoardsMeDocument,
+    baseOptions
+  )
+}
+export function useBoardsMeLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<BoardsMeQuery, BoardsMeQueryVariables>
+) {
+  return ApolloReactHooks.useLazyQuery<BoardsMeQuery, BoardsMeQueryVariables>(
+    BoardsMeDocument,
+    baseOptions
+  )
+}
+export type BoardsMeQueryHookResult = ReturnType<typeof useBoardsMeQuery>
+export type BoardsMeLazyQueryHookResult = ReturnType<typeof useBoardsMeLazyQuery>
+export type BoardsMeQueryResult = ApolloReactCommon.QueryResult<
+  BoardsMeQuery,
+  BoardsMeQueryVariables
+>
+export const BoardsOnlyMeDocument = gql`
+  query BoardsOnlyMe {
+    me {
+      boards {
+        ...BoardInfo
+      }
+    }
+  }
+  ${BoardInfoFragmentDoc}
+`
+
+/**
+ * __useBoardsOnlyMeQuery__
+ *
+ * To run a query within a React component, call `useBoardsOnlyMeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useBoardsOnlyMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useBoardsOnlyMeQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useBoardsOnlyMeQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<BoardsOnlyMeQuery, BoardsOnlyMeQueryVariables>
+) {
+  return ApolloReactHooks.useQuery<BoardsOnlyMeQuery, BoardsOnlyMeQueryVariables>(
+    BoardsOnlyMeDocument,
+    baseOptions
+  )
+}
+export function useBoardsOnlyMeLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<BoardsOnlyMeQuery, BoardsOnlyMeQueryVariables>
+) {
+  return ApolloReactHooks.useLazyQuery<BoardsOnlyMeQuery, BoardsOnlyMeQueryVariables>(
+    BoardsOnlyMeDocument,
+    baseOptions
+  )
+}
+export type BoardsOnlyMeQueryHookResult = ReturnType<typeof useBoardsOnlyMeQuery>
+export type BoardsOnlyMeLazyQueryHookResult = ReturnType<typeof useBoardsOnlyMeLazyQuery>
+export type BoardsOnlyMeQueryResult = ApolloReactCommon.QueryResult<
+  BoardsOnlyMeQuery,
+  BoardsOnlyMeQueryVariables
+>
 export const HasDarkThemeDocument = gql`
   query HasDarkTheme {
     hasDarkTheme @client
@@ -506,6 +1173,7 @@ export const ModalContextDocument = gql`
       id
       isOpen
       currentTab
+      path
     }
   }
 `
@@ -553,22 +1221,14 @@ export const LoginDocument = gql`
       ...UserInfo
       role
       boards {
-        ...BoardInfo
-        tasks {
-          ...TaskInfo
-          tags {
-            ...TagInfo
-          }
-        }
+        ...BoardCascadeInfo
       }
       createdAt
       updatedAt
     }
   }
   ${UserInfoFragmentDoc}
-  ${BoardInfoFragmentDoc}
-  ${TaskInfoFragmentDoc}
-  ${TagInfoFragmentDoc}
+  ${BoardCascadeInfoFragmentDoc}
 `
 export type LoginMutationFn = ApolloReactCommon.MutationFunction<
   LoginMutation,
@@ -612,22 +1272,14 @@ export const RegisterDocument = gql`
       ...UserInfo
       role
       boards {
-        ...BoardInfo
-        tasks {
-          ...TaskInfo
-          tags {
-            ...TagInfo
-          }
-        }
+        ...BoardCascadeInfo
       }
       createdAt
       updatedAt
     }
   }
   ${UserInfoFragmentDoc}
-  ${BoardInfoFragmentDoc}
-  ${TaskInfoFragmentDoc}
-  ${TagInfoFragmentDoc}
+  ${BoardCascadeInfoFragmentDoc}
 `
 export type RegisterMutationFn = ApolloReactCommon.MutationFunction<
   RegisterMutation,
@@ -845,22 +1497,14 @@ export const MeDocument = gql`
       ...UserInfo
       role
       boards {
-        ...BoardInfo
-        tasks {
-          ...TaskInfo
-          tags {
-            ...TagInfo
-          }
-        }
+        ...BoardCascadeInfo
       }
       createdAt
       updatedAt
     }
   }
   ${UserInfoFragmentDoc}
-  ${BoardInfoFragmentDoc}
-  ${TaskInfoFragmentDoc}
-  ${TagInfoFragmentDoc}
+  ${BoardCascadeInfoFragmentDoc}
 `
 
 /**

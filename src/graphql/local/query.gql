@@ -7,5 +7,6 @@ query ModalContext {
     id
     isOpen
     currentTab
+    path
   }
 }

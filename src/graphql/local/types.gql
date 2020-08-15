@@ -2,6 +2,7 @@ type ModalContext {
   id: String!
   isOpen: Boolean!
   currentTab: String
+  path: String
 }
 
 extend type Query {

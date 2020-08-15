@@ -5,13 +5,7 @@ mutation Login($input: LoginInput!) {
     ...UserInfo
     role
     boards {
-      ...BoardInfo
-      tasks {
-        ...TaskInfo
-        tags {
-          ...TagInfo
-        }
-      }
+      ...BoardCascadeInfo
     }
     createdAt
     updatedAt
@@ -23,13 +17,7 @@ mutation Register($input: RegisterInput!) {
     ...UserInfo
     role
     boards {
-      ...BoardInfo
-      tasks {
-        ...TaskInfo
-        tags {
-          ...TagInfo
-        }
-      }
+      ...BoardCascadeInfo
     }
     createdAt
     updatedAt

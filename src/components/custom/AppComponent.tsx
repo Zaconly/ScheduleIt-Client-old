@@ -89,6 +89,11 @@ const AppComponent = ({ Component, pageProps }: AppProps) => {
                 ? "0 2px 10px 0 rgba(23,70,161,.11)"
                 : "0 2px 10px 0 rgba(0, 0, 0, 1)"
             }
+          },
+          MuiSvgIcon: {
+            colorAction: {
+              color: isLight ? "rgba(0, 0, 0, 0.54)" : "rgba(255, 255, 255, 0.7)"
+            }
           }
         }
       }),

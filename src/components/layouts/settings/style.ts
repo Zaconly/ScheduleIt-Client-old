@@ -12,12 +12,18 @@ export const useStyles = makeStyles((theme: Theme) => {
     tabsWrapper: {
       marginRight: spacing,
       paddingTop: spacing,
-      paddingBottom: spacing
+      paddingBottom: spacing,
+      [theme.breakpoints.down("md")]: {
+        marginRight: theme.spacing(1)
+      }
     },
     contentWrapper: {
       flex: 1,
       padding: spacing,
-      marginLeft: spacing
+      marginLeft: spacing,
+      [theme.breakpoints.down("md")]: {
+        marginLeft: theme.spacing(1)
+      }
     },
     tabWrapper: {
       alignItems: "start"

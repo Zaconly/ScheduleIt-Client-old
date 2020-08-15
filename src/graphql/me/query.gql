@@ -5,13 +5,7 @@ query Me {
     ...UserInfo
     role
     boards {
-      ...BoardInfo
-      tasks {
-        ...TaskInfo
-        tags {
-          ...TagInfo
-        }
-      }
+      ...BoardCascadeInfo
     }
     createdAt
     updatedAt

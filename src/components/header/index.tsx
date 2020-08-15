@@ -1,13 +1,14 @@
-import { AppBar, Badge, Button, IconButton, Toolbar, Typography } from "@material-ui/core"
+import { AppBar, Badge, Button, IconButton, Toolbar, Tooltip, Typography } from "@material-ui/core"
 import {
   Notifications as NotificationsIcon,
-  PersonOutline as AccountIcon
+  PersonOutline as AccountIcon,
+  Store as StoreIcon
 } from "@material-ui/icons"
+import clsx from "clsx"
 import Link from "next/link"
 import { useRef, useState } from "react"
 
-import { modalContextVar } from "../../apollo"
-import { useMeState } from "../../utils/hooks"
+import { useMeState, useModal } from "../../utils/hooks"
 import { AuthModal } from "../auth"
 import { OwnMenu } from "../custom"
 import HeaderMenuItems from "./HeaderMenuItems"
@@ -21,6 +22,7 @@ const Header = ({ mode }: Props) => {
   const classes = useStyles()
   const [openMenu, setOpenMenu] = useState(false)
   const anchorRef = useRef<HTMLButtonElement>(null)
+  const { onOpen } = useModal({ id: "AuthModal" })
   const { isLoggedIn } = useMeState()
 
   const handleToggle = () => {
@@ -28,11 +30,11 @@ const Header = ({ mode }: Props) => {
   }
 
   const handleOpenAuthModal = (type: "login" | "register") => {
-    modalContextVar({
-      id: "AuthModal",
-      isOpen: true,
-      currentTab: type
-    })
+    onOpen({ currentTab: type })
+  }
+
+  const handleNavigation = () => {
+    onOpen({ id: "StoreModal", route: "/store" })
   }
 
   return (
@@ -49,15 +51,26 @@ const Header = ({ mode }: Props) => {
             <div className={classes.sectionDesktop}>
               <div className={classes.rightSection}>
                 {isLoggedIn ? (
-                  <IconButton
-                    aria-label="show 17 new notifications"
-                    color="inherit"
-                    className={classes.iconPadding}
-                  >
-                    <Badge badgeContent={17} color="primary">
-                      <NotificationsIcon />
-                    </Badge>
-                  </IconButton>
+                  <>
+                    <IconButton
+                      aria-label="show 17 new notifications"
+                      className={classes.iconPadding}
+                    >
+                      <Badge badgeContent={17} color="primary">
+                        <NotificationsIcon color="action" />
+                      </Badge>
+                    </IconButton>
+                    <Tooltip title="Store" enterDelay={500} leaveDelay={200}>
+                      <IconButton
+                        aria-label="open store"
+                        component="a"
+                        className={classes.iconPadding}
+                        onClick={handleNavigation}
+                      >
+                        <StoreIcon color="action" />
+                      </IconButton>
+                    </Tooltip>
+                  </>
                 ) : (
                   <>
                     <Button
@@ -86,10 +99,13 @@ const Header = ({ mode }: Props) => {
                   aria-controls={openMenu ? "menu-list-grow" : undefined}
                   aria-haspopup="true"
                   color="secondary"
-                  className={isLoggedIn ? classes.avatarAuth : classes.avatarAnon}
+                  className={clsx(
+                    classes.avatarSize,
+                    isLoggedIn ? classes.avatarAuth : classes.avatarAnon
+                  )}
                   onClick={handleToggle}
                 >
-                  <AccountIcon />
+                  <AccountIcon className={classes.avatarSize} />
                 </IconButton>
                 <OwnMenu
                   open={openMenu}

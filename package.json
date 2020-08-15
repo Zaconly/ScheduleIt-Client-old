@@ -24,7 +24,8 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-hook-form": "^6.3.0",
-    "react-scrollbars-custom": "^4.0.25"
+    "react-scrollbars-custom": "^4.0.25",
+    "slugify": "^1.4.5"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "1.17.7",

@@ -1,0 +1,17 @@
+# import "../fragment.gql"
+
+mutation AddBoard($input: BoardInput!) {
+  addBoard(input: $input) {
+    ...BoardCascadeInfo
+  }
+}
+
+mutation UpdateBoard($id: ID!, $input: BoardInput!) {
+  updateBoard(id: $id, input: $input) {
+    ...BoardCascadeInfo
+  }
+}
+
+mutation DeleteBoard($id: ID!) {
+  deleteBoard(id: $id)
+}
